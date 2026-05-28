@@ -10,6 +10,7 @@
   let articles = [];
   let currentView = 'home';
   let currentCategory = null;
+  let currentSubcategory = null;
   let currentSearch = '';
   let searchTimer = null;
 
@@ -98,34 +99,57 @@
   }
 
   /* ---- Category Detail View ---- */
-  function renderCategory(cat) {
+  function renderCategory(cat, subcat) {
     currentView = 'category';
     currentCategory = cat;
+    currentSubcategory = subcat || null;
     if (searchInput) searchInput.value = '';
     currentSearch = '';
     if (noResults) noResults.classList.remove('visible');
 
     updatePillActive(cat);
 
-    const filtered = articles
-      .filter(a => a.category === cat)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    var catArticles = articles
+      .filter(function (a) { return a.category === cat; })
+      .sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
 
-    if (filtered.length === 0) {
+    // Extract unique subcategories
+    var subcats = [];
+    catArticles.forEach(function (a) {
+      if (a.subcategory && subcats.indexOf(a.subcategory) === -1) {
+        subcats.push(a.subcategory);
+      }
+    });
+
+    // Filter by subcategory if specified
+    if (subcat) {
+      catArticles = catArticles.filter(function (a) { return a.subcategory === subcat; });
+    }
+
+    if (catArticles.length === 0) {
       contentArea.innerHTML = '';
       if (noResults) noResults.classList.add('visible');
       return;
     }
 
+    var subPillsHTML = subcats.length > 0 ? `
+      <div class="sub-pills">
+        <button class="sub-pill${!subcat ? ' active' : ''}" data-subcat="">全部</button>
+        ${subcats.map(function (s) {
+          return '<button class="sub-pill' + (subcat === s ? ' active' : '') + '" data-subcat="' + escapeHTML(s) + '">' + escapeHTML(s) + '</button>';
+        }).join('')}
+      </div>` : '';
+
     contentArea.innerHTML = `
       <section class="section">
         <div class="section__header">
           <h2 class="section__title">${escapeHTML(cat)}</h2>
-          <span style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-muted);">共 ${filtered.length} 篇</span>
+          <span style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-muted);">共 ${catArticles.length} 篇</span>
         </div>
+        ${subPillsHTML}
       </section>
       <div class="grid">
-        ${filtered.map(a => createCard(a)).join('')}
+        ${catArticles.map(function (a) { return createCard(a); }).join('')}
       </div>`;
   }
 
@@ -180,6 +204,7 @@
           <span class="card__tag">${escapeHTML(article.category)}</span>
         </div>
         <div class="card__body">
+          ${article.subcategory ? '<span class="card__subtag">' + escapeHTML(article.subcategory) + '</span>' : ''}
           <h2 class="card__title">${escapeHTML(article.title)}</h2>
           <p class="card__summary">${escapeHTML(article.summary)}</p>
           <time class="card__date" datetime="${article.date}">${formatDate(article.date)}</time>
@@ -219,7 +244,7 @@
     if (categoryPills) {
       categoryPills.addEventListener('click', e => {
         if (!e.target.classList.contains('pill')) return;
-        const cat = e.target.dataset.category;
+        var cat = e.target.dataset.category;
         if (cat === 'all') {
           renderHome();
         } else {
@@ -228,15 +253,22 @@
       });
     }
 
+    // Sub-pill clicks (event delegation on contentArea)
+    contentArea.addEventListener('click', function (e) {
+      if (!e.target.classList.contains('sub-pill')) return;
+      var subcat = e.target.dataset.subcat;
+      renderCategory(currentCategory, subcat || null);
+    });
+
     if (searchInput) {
       searchInput.addEventListener('input', e => {
         clearTimeout(searchTimer);
         searchTimer = setTimeout(() => {
-          const term = e.target.value.trim();
+          var term = e.target.value.trim();
           if (term) {
             renderSearch(term);
           } else if (currentView === 'category' && currentCategory) {
-            renderCategory(currentCategory);
+            renderCategory(currentCategory, currentSubcategory);
           } else {
             renderHome();
           }

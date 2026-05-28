@@ -244,6 +244,49 @@ h1, h2, h3 {
   color: var(--color-brand);
 }
 
+/* Sub-category pills (detail page) */
+.sub-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: var(--spacing-sm);
+}
+
+.sub-pill {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 400;
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.sub-pill:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.sub-pill.active {
+  background: var(--color-text);
+  color: #ffffff;
+  border-color: var(--color-text);
+}
+
+/* Sub-category label on cards */
+.card__subtag {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-brand);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .section__row {
   display: grid;
   grid-template-columns: 3fr 2fr;

@@ -6,6 +6,7 @@
     "date": "2026-05-20",
     "url": "https://example.com/platform-launch",
     "category": "平台简介",
+    "subcategory": "平台动态",
     "image": "https://picsum.photos/seed/platform1/800/500"
   },
   {
@@ -15,6 +16,7 @@
     "date": "2026-05-18",
     "url": "https://example.com/platform-features",
     "category": "平台简介",
+    "subcategory": "用户指南",
     "image": "https://picsum.photos/seed/platform2/800/500"
   },
   {
@@ -24,6 +26,7 @@
     "date": "2026-05-15",
     "url": "https://example.com/platform-policy",
     "category": "平台简介",
+    "subcategory": "关于我们",
     "image": "https://picsum.photos/seed/platform3/800/500"
   },
   {
@@ -33,6 +36,7 @@
     "date": "2026-05-12",
     "url": "https://example.com/platform-tech",
     "category": "平台简介",
+    "subcategory": "平台动态",
     "image": "https://picsum.photos/seed/platform4/800/500"
   },
   {
@@ -42,33 +46,37 @@
     "date": "2026-05-10",
     "url": "https://example.com/platform-partner",
     "category": "平台简介",
+    "subcategory": "合作媒体",
     "image": "https://picsum.photos/seed/platform5/800/500"
   },
   {
     "id": 6,
-    "title": "平台首次版本更新：搜索性能提升与界面优化",
-    "summary": "Press Gallery v1.1 正式发布，搜索响应速度提升 300%，同时优化了移动端阅读体验。",
+    "title": "新手入门：三分钟完成平台账号注册与偏好设置",
+    "summary": "图文详解 Press Gallery 注册流程，手把手教你定制个性化资讯首页与分类偏好。",
     "date": "2026-05-08",
-    "url": "https://example.com/platform-update",
+    "url": "https://example.com/platform-started",
     "category": "平台简介",
+    "subcategory": "用户指南",
     "image": "https://picsum.photos/seed/platform6/800/500"
   },
   {
     "id": 7,
-    "title": "旗舰店专区全面升级：品牌官方直营一站式入驻",
-    "summary": "平台旗舰店专区迎来重大改版，支持品牌方开设官方直营页面，涵盖店铺展示、新品首发与会员运营。",
+    "title": "从街边小店到线上头部：一家烘焙品牌的数字化逆袭",
+    "summary": "三年时间从单店做到品类 Top3，拆解「甜时」品牌的全渠道增长策略与私域运营方法论。",
     "date": "2026-05-22",
-    "url": "https://example.com/flagship-upgrade",
+    "url": "https://example.com/bakery-case",
     "category": "商家案例",
+    "subcategory": "创业故事",
     "image": "https://picsum.photos/seed/shop1/800/500"
   },
   {
     "id": 8,
     "title": "设计师买手店集合：小而美的独立品牌正在崛起",
-    "summary": "聚焦当下最受瞩目的独立设计师买手店，从选品理念到空间设计，解读新一代零售美学的商业逻辑。",
+    "summary": "聚焦当下最受瞩目的独立设计师买手店，从选品理念到空间设计，解读新一代零售美学。",
     "date": "2026-05-19",
     "url": "https://example.com/designer-shops",
     "category": "商家案例",
+    "subcategory": "品牌案例",
     "image": "https://picsum.photos/seed/shop2/800/500"
   },
   {
@@ -78,6 +86,7 @@
     "date": "2026-05-16",
     "url": "https://example.com/cross-border-guide",
     "category": "商家案例",
+    "subcategory": "运营干货",
     "image": "https://picsum.photos/seed/shop3/800/500"
   },
   {
@@ -87,6 +96,7 @@
     "date": "2026-05-13",
     "url": "https://example.com/heritage-brands",
     "category": "商家案例",
+    "subcategory": "品牌案例",
     "image": "https://picsum.photos/seed/shop4/800/500"
   },
   {
@@ -96,6 +106,7 @@
     "date": "2026-05-09",
     "url": "https://example.com/incubator-program",
     "category": "商家案例",
+    "subcategory": "新锐品牌",
     "image": "https://picsum.photos/seed/shop5/800/500"
   },
   {
@@ -105,15 +116,17 @@
     "date": "2026-05-06",
     "url": "https://example.com/service-ecosystem",
     "category": "商家案例",
+    "subcategory": "运营干货",
     "image": "https://picsum.photos/seed/shop6/800/500"
   },
   {
     "id": 13,
     "title": "2026 秋冬配饰趋势报告：这些单品正在全网断货",
-    "summary": "大数据追踪显示， oversized 围巾、金属质感手袋和复古胸针成为本季最受追捧的三大配饰品类。",
+    "summary": "大数据追踪显示，oversized 围巾、金属质感手袋和复古胸针成为本季最受追捧的三大配饰品类。",
     "date": "2026-05-21",
     "url": "https://example.com/accessories-trend",
     "category": "热点同款",
+    "subcategory": "时尚单品",
     "image": "https://picsum.photos/seed/hot1/800/500"
   },
   {
@@ -123,6 +136,7 @@
     "date": "2026-05-17",
     "url": "https://example.com/beauty-trending",
     "category": "热点同款",
+    "subcategory": "美妆护肤",
     "image": "https://picsum.photos/seed/hot2/800/500"
   },
   {
@@ -132,6 +146,7 @@
     "date": "2026-05-14",
     "url": "https://example.com/smart-home-trending",
     "category": "热点同款",
+    "subcategory": "数码好物",
     "image": "https://picsum.photos/seed/hot3/800/500"
   },
   {
@@ -141,6 +156,7 @@
     "date": "2026-05-11",
     "url": "https://example.com/sustainable-fashion",
     "category": "热点同款",
+    "subcategory": "时尚单品",
     "image": "https://picsum.photos/seed/hot4/800/500"
   },
   {
@@ -150,6 +166,7 @@
     "date": "2026-05-07",
     "url": "https://example.com/athleisure-trend",
     "category": "热点同款",
+    "subcategory": "时尚单品",
     "image": "https://picsum.photos/seed/hot5/800/500"
   },
   {
@@ -159,6 +176,7 @@
     "date": "2026-05-04",
     "url": "https://example.com/pet-tech-trending",
     "category": "热点同款",
+    "subcategory": "生活家居",
     "image": "https://picsum.photos/seed/hot6/800/500"
   },
   {
@@ -168,6 +186,7 @@
     "date": "2026-05-02",
     "url": "https://example.com/home-decor-trending",
     "category": "热点同款",
+    "subcategory": "生活家居",
     "image": "https://picsum.photos/seed/hot7/800/500"
   },
   {
@@ -177,6 +196,7 @@
     "date": "2026-04-28",
     "url": "https://example.com/white-canvas-case",
     "category": "商家案例",
+    "subcategory": "创业故事",
     "image": "https://picsum.photos/seed/shop7/800/500"
   }
 ]
