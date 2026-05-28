@@ -152,7 +152,7 @@ h1, h2, h3 {
 }
 
 .pill[data-category="平台简介"] { background: #f4f0ff; color: #6741d9; }
-.pill[data-category="商家大类"] { background: #edf2ff; color: #3b5bdb; }
+.pill[data-category="商家案例"] { background: #edf2ff; color: #3b5bdb; }
 .pill[data-category="热点同款"] { background: #fff4e6; color: #e67700; }
 
 .pill:hover {

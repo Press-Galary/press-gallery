@@ -59,7 +59,7 @@
     "summary": "平台旗舰店专区迎来重大改版，支持品牌方开设官方直营页面，涵盖店铺展示、新品首发与会员运营。",
     "date": "2026-05-22",
     "url": "https://example.com/flagship-upgrade",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop1/800/500"
   },
   {
@@ -68,7 +68,7 @@
     "summary": "聚焦当下最受瞩目的独立设计师买手店，从选品理念到空间设计，解读新一代零售美学的商业逻辑。",
     "date": "2026-05-19",
     "url": "https://example.com/designer-shops",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop2/800/500"
   },
   {
@@ -77,7 +77,7 @@
     "summary": "一文读懂跨境电商商家在平台的完整入驻流程，包含资质要求、品类选择策略及流量获取技巧。",
     "date": "2026-05-16",
     "url": "https://example.com/cross-border-guide",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop3/800/500"
   },
   {
@@ -86,7 +86,7 @@
     "summary": "探访多家成功转型的中华老字号品牌，解析其数字化运营策略与全渠道布局的核心方法论。",
     "date": "2026-05-13",
     "url": "https://example.com/heritage-brands",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop4/800/500"
   },
   {
@@ -95,7 +95,7 @@
     "summary": "Press Gallery 联合多家投资机构推出新锐品牌孵化计划，为初创商家提供流量、技术、资金三重支持。",
     "date": "2026-05-09",
     "url": "https://example.com/incubator-program",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop5/800/500"
   },
   {
@@ -104,7 +104,7 @@
     "summary": "发布首份商家服务商生态研究报告，覆盖仓储物流、跨境支付、内容营销等关键环节的头部服务商盘点。",
     "date": "2026-05-06",
     "url": "https://example.com/service-ecosystem",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop6/800/500"
   },
   {
@@ -176,7 +176,7 @@
     "summary": "深度拆解白T品牌「White Canvas」的商业模式——极致单品策略如何通过面料创新与内容营销突围。",
     "date": "2026-04-28",
     "url": "https://example.com/white-canvas-case",
-    "category": "商家大类",
+    "category": "商家案例",
     "image": "https://picsum.photos/seed/shop7/800/500"
   }
 ]

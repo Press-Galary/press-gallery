@@ -1,9 +1,9 @@
 (function () {
-  const CATEGORIES = ['平台简介', '商家大类', '热点同款'];
+  const CATEGORIES = ['平台简介', '商家案例', '热点同款'];
 
   const CATEGORY_IMAGES = {
     '平台简介': 'https://picsum.photos/seed/platform-cat/800/1066',
-    '商家大类': 'https://picsum.photos/seed/merchant-cat/800/1066',
+    '商家案例': 'https://picsum.photos/seed/merchant-cat/800/1066',
     '热点同款': 'https://picsum.photos/seed/trending-cat/800/1066'
   };
 
