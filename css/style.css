@@ -277,14 +277,37 @@ h1, h2, h3 {
   border-color: var(--color-text);
 }
 
-/* Sub-category label on cards */
-.card__subtag {
+/* Sub-category section divider */
+.sub-section {
+  margin-bottom: var(--spacing-md);
+}
+
+.sub-section__heading {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.sub-section__heading span {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--color-brand);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--color-muted);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.sub-section__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gap);
 }
 
 .section__row {

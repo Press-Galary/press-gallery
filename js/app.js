@@ -140,17 +140,32 @@
         }).join('')}
       </div>` : '';
 
+    // Build body: either sub-section layout (default) or full grid (when filtered)
+    var bodyHTML;
+    if (subcat) {
+      // Filtered by one subcategory → full grid
+      bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
+    } else {
+      // Default: show each sub-category as a lightweight section with 2 articles
+      bodyHTML = subcats.map(function (s) {
+        var subArticles = catArticles.filter(function (a) { return a.subcategory === s; }).slice(0, 2);
+        if (subArticles.length === 0) return '';
+        return '<div class="sub-section">'
+          + '<div class="sub-section__heading">' + escapeHTML(s) + '<span>' + subArticles.length + ' 篇</span></div>'
+          + '<div class="sub-section__grid">' + subArticles.map(function (a) { return createCard(a); }).join('') + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
     contentArea.innerHTML = `
       <section class="section">
         <div class="section__header">
           <h2 class="section__title">${escapeHTML(cat)}</h2>
-          <span style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-muted);">共 ${catArticles.length} 篇</span>
+          <span class="section__more" style="color:var(--color-muted);cursor:default;">共 ${catArticles.length} 篇</span>
         </div>
         ${subPillsHTML}
       </section>
-      <div class="grid">
-        ${catArticles.map(function (a) { return createCard(a); }).join('')}
-      </div>`;
+      ${bodyHTML}`;
   }
 
   /* ---- Search (grid view) ---- */
@@ -204,7 +219,6 @@
           <span class="card__tag">${escapeHTML(article.category)}</span>
         </div>
         <div class="card__body">
-          ${article.subcategory ? '<span class="card__subtag">' + escapeHTML(article.subcategory) + '</span>' : ''}
           <h2 class="card__title">${escapeHTML(article.title)}</h2>
           <p class="card__summary">${escapeHTML(article.summary)}</p>
           <time class="card__date" datetime="${article.date}">${formatDate(article.date)}</time>
