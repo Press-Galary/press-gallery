@@ -263,12 +263,16 @@ h1, h2, h3 {
 }
 
 .section__image-wrap {
+  position: relative;
   overflow: hidden;
   border-radius: var(--card-radius);
-  min-height: 0;
+  height: 100%;
 }
 
 .section__image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -558,17 +562,9 @@ h1, h2, h3 {
     gap: var(--spacing-sm);
   }
 
-  .section__row--reverse .section__image-wrap {
-    order: -1;
-  }
-
-  .section__row--reverse .section__articles {
-    order: 0;
-  }
-
   .section__image-wrap {
-    aspect-ratio: 16 / 9;
-    min-height: auto;
+    height: auto;
+    aspect-ratio: 3 / 2;
   }
 
   .grid {
