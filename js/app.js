@@ -13,17 +13,19 @@
   const contentArea = document.getElementById('contentArea');
   const noResults = document.getElementById('noResults');
 
+  /* ---- Guard: ensure all DOM elements exist ---- */
+  if (!contentArea) return;
+
   /* ---- Fetch ---- */
   async function fetchArticles() {
     try {
       const res = await fetch('data/articles.json');
-      if (!res.ok) throw new Error('Failed to load articles');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       articles = await res.json();
       init();
     } catch (err) {
       contentArea.innerHTML =
         '<p style="text-align:center;padding:4rem;color:var(--color-muted);">文章加载失败，请刷新页面重试。</p>';
-      console.error(err);
     }
   }
 
@@ -36,6 +38,7 @@
 
   /* ---- Pills ---- */
   function renderPills() {
+    if (!categoryPills) return;
     const pills = ['all', ...CATEGORIES];
     categoryPills.innerHTML = pills
       .map(c =>
@@ -50,9 +53,9 @@
   function renderHome() {
     currentView = 'home';
     currentCategory = null;
-    searchInput.value = '';
+    if (searchInput) searchInput.value = '';
     currentSearch = '';
-    noResults.classList.remove('visible');
+    if (noResults) noResults.classList.remove('visible');
 
     const sectionsHTML = CATEGORIES.map(cat => {
       const catArticles = articles
@@ -74,7 +77,7 @@
         </section>`;
     }).join('');
 
-    contentArea.innerHTML = sectionsHTML;
+    contentArea.innerHTML = sectionsHTML || '<p style="text-align:center;padding:4rem;color:var(--color-muted);">暂无文章。</p>';
 
     document.querySelectorAll('.section__more').forEach(btn => {
       btn.addEventListener('click', () => renderCategory(btn.dataset.goto));
@@ -85,9 +88,9 @@
   function renderCategory(cat) {
     currentView = 'category';
     currentCategory = cat;
-    searchInput.value = '';
+    if (searchInput) searchInput.value = '';
     currentSearch = '';
-    noResults.classList.remove('visible');
+    if (noResults) noResults.classList.remove('visible');
 
     updatePillActive(cat);
 
@@ -97,7 +100,7 @@
 
     if (filtered.length === 0) {
       contentArea.innerHTML = '';
-      noResults.classList.add('visible');
+      if (noResults) noResults.classList.add('visible');
       return;
     }
 
@@ -105,11 +108,11 @@
       <section class="section">
         <div class="section__header">
           <h2 class="section__title">${escapeHTML(cat)}</h2>
-          <span class="section__more" style="color:var(--color-muted);cursor:default;">共 ${filtered.length} 篇</span>
+          <span style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-muted);">共 ${filtered.length} 篇</span>
         </div>
       </section>
       <div class="grid">
-        ${filtered.map((a, i) => createCard(a)).join('')}
+        ${filtered.map(a => createCard(a)).join('')}
       </div>`;
   }
 
@@ -118,7 +121,7 @@
     currentView = 'category';
     currentCategory = null;
     currentSearch = term;
-    noResults.classList.remove('visible');
+    if (noResults) noResults.classList.remove('visible');
 
     updatePillActive('all');
 
@@ -128,7 +131,7 @@
 
     if (filtered.length === 0) {
       contentArea.innerHTML = '';
-      noResults.classList.add('visible');
+      if (noResults) noResults.classList.add('visible');
       return;
     }
 
@@ -136,11 +139,11 @@
       <section class="section">
         <div class="section__header">
           <h2 class="section__title">搜索："${escapeHTML(term)}"</h2>
-          <span class="section__more" style="color:var(--color-muted);cursor:default;">共 ${filtered.length} 篇</span>
+          <span style="font-family:var(--font-sans);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-muted);">共 ${filtered.length} 篇</span>
         </div>
       </section>
       <div class="grid">
-        ${filtered.map((a, i) => createCard(a)).join('')}
+        ${filtered.map(a => createCard(a)).join('')}
       </div>`;
   }
 
@@ -190,31 +193,39 @@
 
   /* ---- Events ---- */
   function bindEvents() {
-    categoryPills.addEventListener('click', e => {
-      if (!e.target.classList.contains('pill')) return;
-      const cat = e.target.dataset.category;
-      if (cat === 'all') {
-        renderHome();
-      } else {
-        renderCategory(cat);
-      }
-    });
-
-    searchInput.addEventListener('input', e => {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => {
-        const term = e.target.value.trim();
-        if (term) {
-          renderSearch(term);
-        } else if (currentView === 'category' && currentCategory) {
-          renderCategory(currentCategory);
-        } else {
+    if (categoryPills) {
+      categoryPills.addEventListener('click', e => {
+        if (!e.target.classList.contains('pill')) return;
+        const cat = e.target.dataset.category;
+        if (cat === 'all') {
           renderHome();
+        } else {
+          renderCategory(cat);
         }
-      }, 200);
-    });
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', e => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          const term = e.target.value.trim();
+          if (term) {
+            renderSearch(term);
+          } else if (currentView === 'category' && currentCategory) {
+            renderCategory(currentCategory);
+          } else {
+            renderHome();
+          }
+        }, 200);
+      });
+    }
   }
 
   /* ---- Start ---- */
-  fetchArticles();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fetchArticles);
+  } else {
+    fetchArticles();
+  }
 })();
