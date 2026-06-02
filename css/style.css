@@ -244,6 +244,16 @@ h1, h2, h3 {
   color: var(--color-brand);
 }
 
+/* Category intro text */
+.category-intro {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: #4a4a4a;
+  max-width: 900px;
+  margin-top: var(--spacing-sm);
+}
+
 /* Sub-category pills (detail page) */
 .sub-pills {
   display: flex;
