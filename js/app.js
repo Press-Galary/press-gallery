@@ -132,7 +132,9 @@
       return;
     }
 
-    var subPillsHTML = subcats.length > 0 ? `
+    var hasSubcats = subcats.length > 0;
+
+    var subPillsHTML = hasSubcats ? `
       <div class="sub-pills">
         <button class="sub-pill${!subcat ? ' active' : ''}" data-subcat="">全部</button>
         ${subcats.map(function (s) {
@@ -140,9 +142,11 @@
         }).join('')}
       </div>` : '';
 
-    // Build body: either sub-section layout (default) or full grid (when filtered)
     var bodyHTML;
-    if (subcat) {
+    if (!hasSubcats) {
+      // No subcategories → clean grid
+      bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
+    } else if (subcat) {
       // Filtered by one subcategory → full grid
       bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
     } else {
