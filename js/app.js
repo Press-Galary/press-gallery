@@ -144,19 +144,48 @@
 
     var bodyHTML;
     if (!hasSubcats) {
-      // No subcategories → clean grid
       bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
     } else if (subcat) {
-      // Filtered by one subcategory → full grid
-      bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
+      // Filtered by one subcategory → check for special module
+      var modArticles = catArticles.filter(function (a) { return a.module === '红人之夜'; });
+      var regArticles = catArticles.filter(function (a) { return a.module !== '红人之夜'; });
+
+      if (subcat === '红人商家' && modArticles.length > 0) {
+        // Split layout: left grid + right sidebar
+        bodyHTML = '<div class="detail-layout">'
+          + '<div class="detail-main">' + regArticles.map(function (a) { return createCard(a); }).join('') + '</div>'
+          + createSidebarModule(modArticles)
+          + '</div>';
+      } else {
+        bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
+      }
     } else {
-      // Default: show each sub-category as a lightweight section with 2 articles
+      // Default: show each sub-category as a lightweight section
       bodyHTML = subcats.map(function (s) {
-        var subArticles = catArticles.filter(function (a) { return a.subcategory === s; }).slice(0, 2);
+        var subArticles = catArticles.filter(function (a) { return a.subcategory === s; });
         if (subArticles.length === 0) return '';
+
+        if (s === '红人商家') {
+          var sMod = subArticles.filter(function (a) { return a.module === '红人之夜'; });
+          var sReg = subArticles.filter(function (a) { return a.module !== '红人之夜'; });
+          // 1 regular card + 1 module card
+          var gridHTML = '';
+          if (sReg.length > 0) {
+            gridHTML += createCard(sReg[0]);
+          }
+          if (sMod.length > 0) {
+            gridHTML += createModuleCard(sMod);
+          }
+          return '<div class="sub-section">'
+            + '<div class="sub-section__heading">' + escapeHTML(s) + '<span>' + subArticles.length + ' 篇</span></div>'
+            + '<div class="sub-section__grid">' + gridHTML + '</div>'
+            + '</div>';
+        }
+
+        var top2 = subArticles.slice(0, 2);
         return '<div class="sub-section">'
           + '<div class="sub-section__heading">' + escapeHTML(s) + '<span>' + subArticles.length + ' 篇</span></div>'
-          + '<div class="sub-section__grid">' + subArticles.map(function (a) { return createCard(a); }).join('') + '</div>'
+          + '<div class="sub-section__grid">' + top2.map(function (a) { return createCard(a); }).join('') + '</div>'
           + '</div>';
       }).join('');
     }
@@ -170,6 +199,35 @@
         ${subPillsHTML}
       </section>
       ${bodyHTML}`;
+  }
+
+  /* ---- Module Card (for transition page sub-section) ---- */
+  function createModuleCard(modArticles) {
+    return '<a href="#" class="module-card" data-subcat="红人商家">'
+      + '<div class="module-card__title">✦ 红人之夜</div>'
+      + '<div class="module-card__intro">平台年度盛事，汇聚头部红人与品牌，共话内容电商新趋势。</div>'
+      + '<div class="module-card__links">'
+      + modArticles.slice(0, 3).map(function (a) {
+          return '<span class="module-card__link">' + escapeHTML(a.title) + '</span>';
+        }).join('')
+      + '</div>'
+      + '</a>';
+  }
+
+  /* ---- Sidebar Module (for 红人商家 full page) ---- */
+  function createSidebarModule(modArticles) {
+    return '<aside class="sidebar-module">'
+      + '<div class="sidebar-module__title">✦ 红人之夜</div>'
+      + '<p class="sidebar-module__intro">平台年度盛事，汇聚头部红人与品牌，共话内容电商新趋势。本期呈现活动精彩回顾与深度专访。</p>'
+      + '<div class="sidebar-module__links">'
+      + modArticles.map(function (a) {
+          return '<a href="' + escapeHTML(a.url) + '" target="_blank" rel="noopener" class="sidebar-link">'
+            + '<span class="sidebar-link__title">' + escapeHTML(a.title) + '</span>'
+            + '<time class="sidebar-link__date">' + formatDate(a.date) + '</time>'
+            + '</a>';
+        }).join('')
+      + '</div>'
+      + '</aside>';
   }
 
   /* ---- Search (grid view) ---- */
@@ -273,9 +331,17 @@
 
     // Sub-pill clicks (event delegation on contentArea)
     contentArea.addEventListener('click', function (e) {
-      if (!e.target.classList.contains('sub-pill')) return;
-      var subcat = e.target.dataset.subcat;
-      renderCategory(currentCategory, subcat || null);
+      if (e.target.classList.contains('sub-pill')) {
+        var subcat = e.target.dataset.subcat;
+        renderCategory(currentCategory, subcat || null);
+        return;
+      }
+      // Module card click → navigate to 红人商家 detail
+      var card = e.target.closest('.module-card');
+      if (card) {
+        e.preventDefault();
+        renderCategory(currentCategory, '红人商家');
+      }
     });
 
     if (searchInput) {

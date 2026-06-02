@@ -332,6 +332,172 @@ h1, h2, h3 {
   padding: 0.75rem;
 }
 
+/* ========================================
+   Special Module Card (transition page)
+   ======================================== */
+.module-card {
+  background: #faf7f5;
+  border: 1px solid #e8e0d8;
+  border-radius: var(--card-radius);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: default;
+}
+
+.module-card__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b8860b;
+}
+
+.module-card__intro {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.module-card__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0.25rem;
+}
+
+.module-card__link {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  color: var(--color-text);
+  padding: 0.4rem 0;
+  border-bottom: 1px dotted #e8e0d8;
+  transition: color var(--transition);
+}
+
+.module-card__link:last-child {
+  border-bottom: none;
+}
+
+.module-card__link:hover {
+  color: var(--color-brand);
+}
+
+/* ========================================
+   Detail Split Layout (红人商家 full page)
+   ======================================== */
+.detail-layout {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md) var(--spacing-lg);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.detail-main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gap);
+}
+
+/* Sidebar module */
+.sidebar-module {
+  background: #faf7f5;
+  border: 1px solid #e8e0d8;
+  border-radius: var(--card-radius);
+  padding: var(--spacing-md);
+  position: sticky;
+  top: 80px;
+}
+
+.sidebar-module__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b8860b;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid #e8e0d8;
+}
+
+.sidebar-module__intro {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+}
+
+.sidebar-module__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ece5dc;
+  transition: padding var(--transition);
+}
+
+.sidebar-link:last-child {
+  border-bottom: none;
+}
+
+.sidebar-link:hover {
+  padding-left: 0.4rem;
+}
+
+.sidebar-link__title {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sidebar-link__date {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--color-muted);
+  margin-top: 0.2rem;
+}
+
+/* ========================================
+   Responsive overrides for split layout
+   ======================================== */
+@media (max-width: 900px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .detail-main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sidebar-module {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-main {
+    grid-template-columns: 1fr;
+  }
+}
+
 .section__row {
   display: grid;
   grid-template-columns: 3fr 2fr;

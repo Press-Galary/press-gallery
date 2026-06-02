@@ -195,5 +195,69 @@
     "category": "商家案例",
     "subcategory": "新商入淘",
     "image": "https://picsum.photos/seed/shop8/800/500"
+  },
+  {
+    "id": 21,
+    "title": "红人直播间选品逻辑：从数据选款到场景化带货",
+    "summary": "独家专访三位头部带货红人的选品团队，揭示直播间背后的数据驱动选品体系与供应链快速响应机制。",
+    "date": "2026-05-16",
+    "url": "https://example.com/influencer-selection",
+    "category": "商家案例",
+    "subcategory": "红人商家",
+    "image": "https://picsum.photos/seed/shop9/800/500"
+  },
+  {
+    "id": 22,
+    "title": "红人商家私域运营：从粉丝到超级用户的转化路径",
+    "summary": "拆解红人商家如何通过社群运营、会员体系和复购机制，将一次性流量转化为可持续的品牌资产。",
+    "date": "2026-05-12",
+    "url": "https://example.com/influencer-private-domain",
+    "category": "商家案例",
+    "subcategory": "红人商家",
+    "image": "https://picsum.photos/seed/shop10/800/500"
+  },
+  {
+    "id": 23,
+    "title": "2026 红人之夜晚宴：百位头部红人齐聚共话新商业",
+    "summary": "第二届红人之夜在上海举行，来自全国各地的头部内容创作者、品牌主理人与平台高管共同探讨内容电商的下一个五年。",
+    "date": "2026-05-28",
+    "url": "https://example.com/red-night-gala-2026",
+    "category": "商家案例",
+    "subcategory": "红人商家",
+    "module": "红人之夜",
+    "image": "https://picsum.photos/seed/rednight1/800/500"
+  },
+  {
+    "id": 24,
+    "title": "红人之夜年度人物揭晓：年度影响力红人获奖感言",
+    "summary": "在红人之夜晚宴上揭晓了年度影响力红人、年度新锐创作者和年度商业价值红人三大奖项，获奖者分享创作初心。",
+    "date": "2026-05-28",
+    "url": "https://example.com/red-night-awards",
+    "category": "商家案例",
+    "subcategory": "红人商家",
+    "module": "红人之夜",
+    "image": "https://picsum.photos/seed/rednight2/800/500"
+  },
+  {
+    "id": 25,
+    "title": "红人之夜圆桌论坛：内容电商的信任经济如何构建",
+    "summary": "五位行业大咖在红人之夜圆桌上深度对话，从粉丝信任、选品责任到行业自律，探讨红人商业的可持续发展路径。",
+    "date": "2026-05-27",
+    "url": "https://example.com/red-night-roundtable",
+    "category": "商家案例",
+    "subcategory": "红人商家",
+    "module": "红人之夜",
+    "image": "https://picsum.photos/seed/rednight3/800/500"
+  },
+  {
+    "id": 26,
+    "title": "红人之夜幕后花絮：那些你在直播里看不到的瞬间",
+    "summary": "镜头之外的晚宴花絮——红人们的私下互动、后台准备和即兴表演，一场真实而温暖的红人聚会记录。",
+    "date": "2026-05-26",
+    "url": "https://example.com/red-night-bts",
+    "category": "商家案例",
+    "subcategory": "红人商家",
+    "module": "红人之夜",
+    "image": "https://picsum.photos/seed/rednight4/800/500"
   }
 ]
