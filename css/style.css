@@ -689,6 +689,31 @@ h1, h2, h3 {
   margin-top: auto;
 }
 
+/* Text-only card (no image) */
+.card--text-only {
+  background: #fafaf9;
+  border-top: 3px solid var(--color-brand);
+}
+
+.card--text-only .card__body {
+  padding: var(--spacing-md);
+}
+
+.card--text-only .card__title {
+  font-size: 1.12rem;
+}
+
+.card--text-only .card__tag--inline {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-brand);
+  margin-bottom: 0.4rem;
+}
+
 /* ========================================
    8. Category Grid (detail view)
    ======================================== */

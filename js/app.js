@@ -264,21 +264,24 @@
 
   /* ---- Card ---- */
   function createCard(article) {
-    const hasImage = article.image && article.image.trim() !== '';
+    var hasImage = article.image && article.image.trim() !== '';
 
-    const imageHTML = hasImage
-      ? `<img class="card__image" src="${escapeHTML(article.image)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`
-      : '';
-
-    const placeholderHTML = hasImage
-      ? `<div class="card__image--placeholder" style="display:none;"></div>`
-      : `<div class="card__image--placeholder"></div>`;
+    if (!hasImage) {
+      return '<a href="' + escapeHTML(article.url) + '" target="_blank" rel="noopener" class="card card--text-only">'
+        + '<div class="card__body">'
+        + '<span class="card__tag--inline">' + escapeHTML(article.category) + '</span>'
+        + '<h2 class="card__title">' + escapeHTML(article.title) + '</h2>'
+        + '<p class="card__summary">' + escapeHTML(article.summary) + '</p>'
+        + '<time class="card__date" datetime="' + article.date + '">' + formatDate(article.date) + '</time>'
+        + '</div>'
+        + '</a>';
+    }
 
     return `
       <a href="${escapeHTML(article.url)}" target="_blank" rel="noopener" class="card">
         <div class="card__image-wrap">
-          ${imageHTML}
-          ${placeholderHTML}
+          <img class="card__image" src="${escapeHTML(article.image)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <div class="card__image--placeholder" style="display:none;"></div>
           <span class="card__tag">${escapeHTML(article.category)}</span>
         </div>
         <div class="card__body">
