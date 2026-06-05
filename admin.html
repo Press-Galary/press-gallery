@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文章管理 · Press Gallery</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #1a1a1a; line-height: 1.6; }
+.header { background: #1a1a1a; color: #fff; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 1.3rem; font-weight: 600; letter-spacing: 0.04em; }
+.header a { color: #9370FB; text-decoration: none; font-size: 0.85rem; }
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+/* Toolbar */
+.toolbar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+.toolbar select, .toolbar input { padding: 0.5rem 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem; }
+.btn { padding: 0.5rem 1.2rem; border: none; border-radius: 6px; font-size: 0.85rem; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.btn-primary { background: #9370FB; color: #fff; }
+.btn-primary:hover { background: #7c3fdb; }
+.btn-outline { background: #fff; border: 1px solid #ddd; }
+.btn-outline:hover { background: #f0f0f0; }
+.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger:hover { background: #c53030; }
+.btn-small { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+.btn-export { background: #1a1a1a; color: #fff; }
+
+/* Table */
+.table-wrap { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th { background: #fafafa; padding: 0.75rem 1rem; text-align: left; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: #666; border-bottom: 2px solid #eee; }
+td { padding: 0.6rem 1rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+tr:hover td { background: #fafafa; }
+td.title { font-weight: 600; max-width: 300px; }
+td.summary { color: #666; max-width: 350px; font-size: 0.8rem; }
+.badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 100px; font-size: 0.7rem; font-weight: 500; }
+.badge-cat { background: #f4f0ff; color: #6741d9; }
+.badge-sub { background: #edf2ff; color: #3b5bdb; }
+.badge-mod { background: #fff4e6; color: #b8860b; }
+
+/* Form */
+.form-panel { background: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: none; }
+.form-panel.open { display: block; }
+.form-panel h3 { font-size: 1rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #1a1a1a; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.5rem; }
+.form-grid .full { grid-column: 1 / -1; }
+label { display: block; font-size: 0.78rem; font-weight: 600; margin-bottom: 0.25rem; color: #555; }
+input, select, textarea { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+textarea { resize: vertical; min-height: 60px; }
+.form-actions { margin-top: 1rem; display: flex; gap: 0.5rem; }
+
+/* Stats */
+.stats { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.stat { background: #fff; padding: 0.6rem 1rem; border-radius: 8px; font-size: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.stat strong { font-size: 1.2rem; }
+
+/* Toast */
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: #1a1a1a; color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Press Gallery · 文章管理</h1>
+  <div>
+    <a href="index.html">← 返回首页</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <select id="filterCategory">
+      <option value="">全部分类</option>
+    </select>
+    <select id="filterSub">
+      <option value="">全部小分类</option>
+    </select>
+    <button class="btn btn-primary" onclick="openAddForm()">+ 新增文章</button>
+    <button class="btn btn-export" onclick="exportJSON()">导出 JSON</button>
+    <span style="font-size:0.8rem;color:#666;margin-left:auto;" id="resultCount"></span>
+  </div>
+
+  <div class="form-panel" id="formPanel">
+    <h3 id="formTitle">新增文章</h3>
+    <div class="form-grid">
+      <div class="full"><label>标题 *</label><input id="fTitle" placeholder="文章标题"></div>
+      <div class="full"><label>摘要 *</label><textarea id="fSummary" placeholder="简短摘要"></textarea></div>
+      <div><label>日期 *</label><input type="date" id="fDate"></div>
+      <div><label>原文链接 *</label><input id="fUrl" placeholder="https://..."></div>
+      <div><label>大分类 *</label><select id="fCategory" onchange="onCatChange()"></select></div>
+      <div><label>小分类</label><select id="fSubcategory"><option value="">无</option></select></div>
+      <div class="full"><label>图片链接</label><input id="fImage" placeholder="https://... 留空则显示占位图"></div>
+      <div><label>特殊模块</label><select id="fModule"><option value="">无</option><option value="红人之夜">红人之夜</option></select></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" id="btnSave" onclick="saveArticle()">保存</button>
+      <button class="btn btn-outline" onclick="closeForm()">取消</button>
+      <span style="font-size:0.75rem;color:#999;margin-left:auto;" id="formHint"></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>标题</th><th>摘要</th><th>日期</th><th>分类</th><th style="width:140px">操作</th></tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var articles = [];
+var editingId = null;
+
+var CATS = ['平台简介', '商家案例', '热点同款'];
+var SUBCATS = {
+  '平台简介': ['超级时装发布', '原创保护', '趋势打爆-潮流热单', '新商入淘-爆发强劲'],
+  '商家案例': ['IFASHION', '红人商家', '新商入淘'],
+  '热点同款': []
+};
+
+// Load
+fetch('data/articles.json').then(function(r) { return r.json(); }).then(function(data) {
+  articles = data;
+  initFilters();
+  renderAll();
+}).catch(function() {
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#999;">加载失败，请确认在本地服务器中打开此页面</td></tr>';
+});
+
+function initFilters() {
+  var sel = document.getElementById('filterCategory');
+  CATS.forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', renderAll);
+  document.getElementById('filterSub').addEventListener('change', renderAll);
+  document.getElementById('fCategory').innerHTML = CATS.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+}
+
+function renderAll() {
+  var fCat = document.getElementById('filterCategory').value;
+  var fSub = document.getElementById('filterSub').value;
+  var filtered = articles.slice().sort(function(a,b) { return b.id - a.id; });
+  if (fCat) filtered = filtered.filter(function(a) { return a.category === fCat; });
+  if (fSub) filtered = filtered.filter(function(a) { return a.subcategory === fSub; });
+
+  document.getElementById('resultCount').textContent = '显示 ' + filtered.length + ' / ' + articles.length + ' 篇';
+
+  document.getElementById('tableBody').innerHTML = filtered.map(function(a) {
+    return '<tr>'
+      + '<td>' + a.id + '</td>'
+      + '<td class="title">' + esc(a.title) + '</td>'
+      + '<td class="summary">' + esc(a.summary || '') + '</td>'
+      + '<td style="white-space:nowrap">' + (a.date || '') + '</td>'
+      + '<td><span class="badge badge-cat">' + esc(a.category) + '</span>'
+      + (a.subcategory ? ' <span class="badge badge-sub">' + esc(a.subcategory) + '</span>' : '')
+      + (a.module ? ' <span class="badge badge-mod">' + esc(a.module) + '</span>' : '')
+      + '</td>'
+      + '<td>'
+      + '<button class="btn btn-outline btn-small" onclick="openEditForm(' + a.id + ')">编辑</button> '
+      + '<button class="btn btn-danger btn-small" onclick="deleteArticle(' + a.id + ')">删除</button>'
+      + '</td>'
+      + '</tr>';
+  }).join('');
+
+  // Update sub filter options
+  var subSel = document.getElementById('filterSub');
+  var curVal = subSel.value;
+  subSel.innerHTML = '<option value="">全部小分类</option>';
+  var subs = [];
+  articles.forEach(function(a) {
+    if (a.subcategory && (!fCat || a.category === fCat) && subs.indexOf(a.subcategory) === -1) {
+      subs.push(a.subcategory);
+    }
+  });
+  subs.forEach(function(s) {
+    var opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    subSel.appendChild(opt);
+  });
+  subSel.value = curVal;
+
+  // Stats
+  var statsHTML = '<div class="stat">总计 <strong>' + articles.length + '</strong> 篇</div>';
+  CATS.forEach(function(c) {
+    var n = articles.filter(function(a) { return a.category === c; }).length;
+    statsHTML += '<div class="stat">' + c + ' <strong>' + n + '</strong> 篇</div>';
+  });
+  document.getElementById('stats').innerHTML = statsHTML;
+}
+
+function openAddForm() {
+  editingId = null;
+  document.getElementById('formTitle').textContent = '新增文章';
+  document.getElementById('formPanel').classList.add('open');
+  document.getElementById('fTitle').value = '';
+  document.getElementById('fSummary').value = '';
+  document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
+  document.getElementById('fUrl').value = '';
+  document.getElementById('fCategory').value = CATS[0];
+  document.getElementById('fImage').value = '';
+  document.getElementById('fModule').value = '';
+  document.getElementById('btnSave').textContent = '保存';
+  document.getElementById('formHint').textContent = '';
+  onCatChange();
+  document.getElementById('fTitle').focus();
+}
+
+function openEditForm(id) {
+  var a = articles.find(function(x) { return x.id === id; });
+  if (!a) return;
+  editingId = id;
+  document.getElementById('formTitle').textContent = '编辑文章 #' + id;
+  document.getElementById('formPanel').classList.add('open');
+  document.getElementById('fTitle').value = a.title || '';
+  document.getElementById('fSummary').value = a.summary || '';
+  document.getElementById('fDate').value = a.date || '';
+  document.getElementById('fUrl').value = a.url || '';
+  document.getElementById('fCategory').value = a.category || CATS[0];
+  document.getElementById('fImage').value = a.image || '';
+  document.getElementById('fModule').value = a.module || '';
+  document.getElementById('btnSave').textContent = '更新';
+  document.getElementById('formHint').textContent = '';
+  onCatChange();
+  document.getElementById('fSubcategory').value = a.subcategory || '';
+  document.getElementById('fTitle').focus();
+}
+
+function onCatChange() {
+  var cat = document.getElementById('fCategory').value;
+  var sel = document.getElementById('fSubcategory');
+  var subs = SUBCATS[cat] || [];
+  sel.innerHTML = subs.map(function(s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
+  if (subs.length === 0) {
+    sel.innerHTML = '<option value="">无</option>';
+  }
+}
+
+function saveArticle() {
+  var title = document.getElementById('fTitle').value.trim();
+  var summary = document.getElementById('fSummary').value.trim();
+  var date = document.getElementById('fDate').value;
+  var url = document.getElementById('fUrl').value.trim();
+  var cat = document.getElementById('fCategory').value;
+  var sub = document.getElementById('fSubcategory').value;
+  var image = document.getElementById('fImage').value.trim();
+  var module = document.getElementById('fModule').value;
+
+  if (!title || !summary || !date || !url || !cat) {
+    document.getElementById('formHint').textContent = '请填写所有必填项（标题、摘要、日期、链接、大分类）';
+    return;
+  }
+
+  if (editingId) {
+    var a = articles.find(function(x) { return x.id === editingId; });
+    if (a) {
+      a.title = title; a.summary = summary; a.date = date; a.url = url;
+      a.category = cat; a.subcategory = sub || undefined; a.image = image || undefined;
+      if (module) a.module = module; else delete a.module;
+    }
+    toast('文章 #' + editingId + ' 已更新 ✓');
+  } else {
+    var maxId = articles.reduce(function(m, x) { return Math.max(m, x.id); }, 0);
+    var newArticle = {
+      id: maxId + 1,
+      title: title,
+      summary: summary,
+      date: date,
+      url: url,
+      category: cat,
+      image: image || undefined
+    };
+    if (sub) newArticle.subcategory = sub;
+    if (module) newArticle.module = module;
+    articles.push(newArticle);
+    toast('文章 #' + newArticle.id + ' 已添加 ✓ (记得导出!)');
+  }
+
+  closeForm();
+  renderAll();
+}
+
+function deleteArticle(id) {
+  if (!confirm('确认删除文章 #' + id + '？')) return;
+  articles = articles.filter(function(a) { return a.id !== id; });
+  renderAll();
+  toast('文章 #' + id + ' 已删除 ✓ (记得导出!)');
+}
+
+function closeForm() {
+  document.getElementById('formPanel').classList.remove('open');
+  editingId = null;
+}
+
+function exportJSON() {
+  var json = JSON.stringify(articles, null, 2);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(json).then(function() {
+      toast('JSON 已复制到剪贴板 ✓ (' + articles.length + ' 篇文章)');
+    }).catch(function() {
+      downloadJSON(json);
+    });
+  } else {
+    downloadJSON(json);
+  }
+}
+
+function downloadJSON(json) {
+  var blob = new Blob([json], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'articles.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast('JSON 已下载 ✓');
+}
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
