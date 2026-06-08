@@ -144,7 +144,7 @@
 
     var bodyHTML;
     if (!hasSubcats) {
-      bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
+      bodyHTML = '<div class="grid">' + renderArticleCards(catArticles) + '</div>';
     } else if (subcat) {
       // Filtered by one subcategory → check for special module
       var modArticles = catArticles.filter(function (a) { return a.module === '红人之夜'; });
@@ -153,11 +153,11 @@
       if (subcat === '红人商家' && modArticles.length > 0) {
         // Split layout: left grid + right sidebar
         bodyHTML = '<div class="detail-layout">'
-          + '<div class="detail-main">' + regArticles.map(function (a) { return createCard(a); }).join('') + '</div>'
+          + '<div class="detail-main">' + renderArticleCards(regArticles) + '</div>'
           + createSidebarModule(modArticles)
           + '</div>';
       } else {
-        bodyHTML = '<div class="grid">' + catArticles.map(function (a) { return createCard(a); }).join('') + '</div>';
+        bodyHTML = '<div class="grid">' + renderArticleCards(catArticles) + '</div>';
       }
     } else {
       // Default: show each sub-category as a lightweight section
@@ -185,7 +185,7 @@
         var top2 = subArticles.slice(0, 2);
         return '<div class="sub-section">'
           + '<div class="sub-section__heading">' + escapeHTML(s) + '<span>' + subArticles.length + ' 篇</span></div>'
-          + '<div class="sub-section__grid">' + top2.map(function (a) { return createCard(a); }).join('') + '</div>'
+          + '<div class="sub-section__grid">' + renderArticleCards(top2) + '</div>'
           + '</div>';
       }).join('');
     }
@@ -258,7 +258,7 @@
         </div>
       </section>
       <div class="grid">
-        ${filtered.map(a => createCard(a)).join('')}
+        ${renderArticleCards(filtered)}
       </div>`;
   }
 
@@ -290,6 +290,52 @@
           <time class="card__date" datetime="${article.date}">${formatDate(article.date)}</time>
         </div>
       </a>`;
+  }
+
+  /* ---- Render cards with series grouping ---- */
+  function renderArticleCards(artList) {
+    var grouped = {};
+    var seriesOrder = [];
+    artList.forEach(function(a) {
+      if (a.series) {
+        if (!grouped[a.series]) { grouped[a.series] = []; seriesOrder.push(a.series); }
+        grouped[a.series].push(a);
+      }
+    });
+    var renderedIds = {};
+    seriesOrder.forEach(function(s) {
+      grouped[s].forEach(function(a) { renderedIds[a.id] = s; });
+    });
+
+    var html = '';
+    artList.forEach(function(a) {
+      if (a.series && renderedIds[a.id]) {
+        if (grouped[a.series] && grouped[a.series].length > 0) {
+          html += createSeriesCard(a.series, grouped[a.series]);
+          delete grouped[a.series];
+        }
+        return;
+      }
+      if (!a.series) {
+        html += createCard(a);
+      }
+    });
+    return html;
+  }
+
+  function createSeriesCard(seriesName, seriesArticles) {
+    return '<div class="card card--series">'
+      + '<div class="card__body">'
+      + '<span class="card__series-label">系列</span>'
+      + '<h2 class="card__title">' + escapeHTML(seriesName) + '</h2>'
+      + '<div class="card__series-links">'
+      + seriesArticles.map(function(a) {
+          return '<a href="' + escapeHTML(a.url) + '" target="_blank" rel="noopener" class="card__series-link">' + escapeHTML(a.title) + '</a>';
+        }).join('')
+      + '</div>'
+      + '<span class="card__series-count">' + seriesArticles.length + ' 篇文章</span>'
+      + '</div>'
+      + '</div>';
   }
 
   /* ---- Article Link (compact, for home sections) ---- */

@@ -714,6 +714,67 @@ h1, h2, h3 {
   margin-bottom: 0.4rem;
 }
 
+/* Series collection card */
+.card--series {
+  background: #fdfdfc;
+  border: 1px solid #e8e4e0;
+  flex-direction: column;
+  gap: 0;
+}
+
+.card--series .card__body {
+  padding: var(--spacing-sm);
+  gap: 0.3rem;
+}
+
+.card--series .card__series-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a09888;
+}
+
+.card--series .card__title {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.card--series .card__series-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid #f0ece8;
+  margin-top: 0.25rem;
+  padding-top: 0.3rem;
+}
+
+.card--series .card__series-link {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted #ece5dc;
+  transition: padding var(--transition);
+}
+
+.card--series .card__series-link:last-child {
+  border-bottom: none;
+}
+
+.card--series .card__series-link:hover {
+  padding-left: 0.4rem;
+  color: var(--color-brand);
+}
+
+.card--series .card__series-count {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  margin-top: auto;
+}
+
 /* ========================================
    8. Category Grid (detail view)
    ======================================== */

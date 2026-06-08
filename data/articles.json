@@ -166,6 +166,7 @@
     "date": "2026-05-07",
     "url": "https://example.com/athleisure-trend",
     "category": "热点同款",
+    "series": "2026 夏季趋势特辑",
     "image": "https://picsum.photos/seed/hot5/800/500"
   },
   {
@@ -175,6 +176,7 @@
     "date": "2026-05-04",
     "url": "https://example.com/pet-tech-trending",
     "category": "热点同款",
+    "series": "2026 夏季趋势特辑",
     "image": "https://picsum.photos/seed/hot6/800/500"
   },
   {
@@ -184,6 +186,7 @@
     "date": "2026-05-02",
     "url": "https://example.com/home-decor-trending",
     "category": "热点同款",
+    "series": "2026 夏季趋势特辑",
     "image": "https://picsum.photos/seed/hot7/800/500"
   },
   {
