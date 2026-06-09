@@ -51,27 +51,30 @@
     "url": "https://caijing.chinadaily.com.cn/a/202604/01/WS69ccd120a310942cc49a6080.html",
     "category": "平台简介",
     "series": "2026上海时装周：栖香锦✖️Northbutsouth",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 36,
-    "title": "上观新闻：当",
-    "summary": "上观新闻：当",
+    "title": "上观新闻：当淘品牌走进时装周",
+    "summary": "上观新闻：当淘品牌走进时装周",
     "date": "2026-06-09",
     "url": "https://www.shobserver.cn/journal/article/share?id=501718",
     "category": "平台简介",
     "series": "2026上海时装周：栖香锦✖️Northbutsouth",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 37,
-    "title": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，",
+    "title": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，新中式定制成潮流样本",
     "summary": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，新中式定制成潮流样本",
     "date": "2026-06-09",
     "url": "https://news.qq.com/rain/a/20260401A05Y6C00?suid=&media_id=",
     "category": "平台简介",
     "series": "2026上海时装周：栖香锦✖️Northbutsouth",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 38,
@@ -81,6 +84,7 @@
     "url": "http://www.chaoliuzhi.net/news/20250612/1968.html",
     "category": "平台简介",
     "series": "UNICA",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "新锐设计"
   }
 ]
