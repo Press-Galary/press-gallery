@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "中国日报：成交破2000万！栖香锦、Northbutsouth超级时装发布再创峰值！",
+    "summary": "中国日报：成交破2000万！栖香锦、Northbutsouth超级时装发布再创峰值！",
+    "date": "2026-06-09",
+    "url": "https://caijing.chinadaily.com.cn/a/202604/01/WS69ccd120a310942cc49a6080.html",
+    "category": "平台简介",
+    "series": "2026上海时装周：栖香锦✖️Northbutsouth",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
+  },
+  {
+    "id": 2,
+    "title": "上观新闻：当“淘品牌”走进时装周",
+    "summary": "上观新闻：当“淘品牌”走进时装周",
+    "date": "2026-06-09",
+    "url": "https://www.shobserver.cn/journal/article/share?id=501718",
+    "category": "平台简介",
+    "series": "2026上海时装周：栖香锦✖️Northbutsouth",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
+  },
+  {
+    "id": 3,
+    "title": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，“新中式”定制成潮流样本",
+    "summary": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，“新中式”定制成潮流样本",
+    "date": "2026-06-09",
+    "url": "https://news.qq.com/rain/a/20260401A05Y6C00?suid=&media_id=",
+    "category": "平台简介",
+    "series": "2026上海时装周：栖香锦✖️Northbutsouth",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
+  },
+  {
+    "id": 4,
+    "title": "2025北京时装周：栖香锦✖️一抹微蓝✖️ACDY",
+    "summary": "",
+    "date": "2026-06-09",
+    "url": "https://www.sohu.com/a/934328991_116152",
+    "category": "平台简介",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场",
+    "originalTitle": "搜狐时尚：淘宝“组局”，时装周“造场”，多个服饰品牌亮相国际秀场"
+  }
+]
