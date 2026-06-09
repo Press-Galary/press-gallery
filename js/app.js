@@ -11,6 +11,7 @@
   let currentView = 'home';
   let currentCategory = null;
   let currentSubcategory = null;
+  let currentSubSubcategory = null;
   let currentSearch = '';
   let searchTimer = null;
 
@@ -99,10 +100,11 @@
   }
 
   /* ---- Category Detail View ---- */
-  function renderCategory(cat, subcat) {
+  function renderCategory(cat, subcat, subSubcat) {
     currentView = 'category';
     currentCategory = cat;
     currentSubcategory = subcat || null;
+    currentSubSubcategory = subSubcat || null;
     if (searchInput) searchInput.value = '';
     currentSearch = '';
     if (noResults) noResults.classList.remove('visible');
@@ -126,6 +128,21 @@
       catArticles = catArticles.filter(function (a) { return a.subcategory === subcat; });
     }
 
+    // Extract unique sub-subcategories (only when a subcat is active)
+    var subSubcats = [];
+    if (subcat) {
+      catArticles.forEach(function (a) {
+        if (a.subSubcategory && subSubcats.indexOf(a.subSubcategory) === -1) {
+          subSubcats.push(a.subSubcategory);
+        }
+      });
+    }
+
+    // Filter by sub-subcategory if specified
+    if (subSubcat) {
+      catArticles = catArticles.filter(function (a) { return a.subSubcategory === subSubcat; });
+    }
+
     if (catArticles.length === 0) {
       contentArea.innerHTML = '';
       if (noResults) noResults.classList.add('visible');
@@ -139,6 +156,14 @@
         <button class="sub-pill${!subcat ? ' active' : ''}" data-subcat="">全部</button>
         ${subcats.map(function (s) {
           return '<button class="sub-pill' + (subcat === s ? ' active' : '') + '" data-subcat="' + escapeHTML(s) + '">' + escapeHTML(s) + '</button>';
+        }).join('')}
+      </div>` : '';
+
+    var subSubPillsHTML = subSubcats.length > 0 ? `
+      <div class="sub-sub-pills">
+        <button class="sub-sub-pill${!subSubcat ? ' active' : ''}" data-subsubcat="">全部</button>
+        ${subSubcats.map(function (s) {
+          return '<button class="sub-sub-pill' + (subSubcat === s ? ' active' : '') + '" data-subsubcat="' + escapeHTML(s) + '">' + escapeHTML(s) + '</button>';
         }).join('')}
       </div>` : '';
 
@@ -198,6 +223,7 @@
         </div>
         ${cat === '平台简介' ? '<p class="category-intro">淘宝一直是中国最大的线上服饰消费阵地。但是，淘宝已不仅是单纯的"线上服饰购入平台"，而是进化为引领潮流风向、孵化原创品牌、重塑审美体验的"潮流风向标"。<br>当前，中国服饰电商正经历从"流量驱动"向"设计驱动"转型的关键阶段。面对这一现状，淘宝服饰致力于让用心经营的商家既能"卖货赚钱"，又能"保持调性"。<br>为此，淘宝打造了「超级时装发布」IP，打破传统叫卖式直播局限，助力商家完成从"卖货"到"品牌叙事"的跃迁；同时，淘宝的趋势团队提前捕捉潮流趋势，在穿搭频道的「潮流热单」让消费者第一时间触达前沿时尚；此外，在政策护航方面，淘宝投入千亿资源保护原创，率先实现跨平台打击抄款、严格治理劣质AI假图，为原创设计营造纯净的经营土壤。<br>对于消费者来说，淘宝上不仅有高性价比的基础款服饰，更有快流行一步的趋势单品和原创潮牌；<br>而对于服饰商家来说，淘宝不仅仅是一个"出货渠道"，更是适合打造品牌、值得深耕的主阵地。</p>' : ''}
         ${subPillsHTML}
+        ${subSubPillsHTML}
       </section>
       ${bodyHTML}`;
   }
@@ -271,6 +297,7 @@
         + '<div class="card__body">'
         + '<span class="card__tag--inline">' + escapeHTML(article.category) + '</span>'
         + '<h2 class="card__title">' + escapeHTML(article.title) + '</h2>'
+        + (article.originalTitle ? '<p class="card__original-title">' + escapeHTML(article.originalTitle) + '</p>' : '')
         + '<p class="card__summary">' + escapeHTML(article.summary) + '</p>'
         + '<time class="card__date" datetime="' + article.date + '">' + formatDate(article.date) + '</time>'
         + '</div>'
@@ -286,6 +313,7 @@
         </div>
         <div class="card__body">
           <h2 class="card__title">${escapeHTML(article.title)}</h2>
+          ${article.originalTitle ? '<p class="card__original-title">' + escapeHTML(article.originalTitle) + '</p>' : ''}
           <p class="card__summary">${escapeHTML(article.summary)}</p>
           <time class="card__date" datetime="${article.date}">${formatDate(article.date)}</time>
         </div>
@@ -343,6 +371,7 @@
     return `
       <a href="${escapeHTML(article.url)}" target="_blank" rel="noopener" class="article-link">
         <span class="article-link__title">${escapeHTML(article.title)}</span>
+        ${article.originalTitle ? '<span class="card__original-title">' + escapeHTML(article.originalTitle) + '</span>' : ''}
         <span class="article-link__summary">${escapeHTML(article.summary)}</span>
         <time class="article-link__date">${formatDate(article.date)}</time>
       </a>`;
@@ -381,6 +410,11 @@
 
     // Sub-pill clicks (event delegation on contentArea)
     contentArea.addEventListener('click', function (e) {
+      if (e.target.classList.contains('sub-sub-pill')) {
+        var subsubcat = e.target.dataset.subsubcat;
+        renderCategory(currentCategory, currentSubcategory, subsubcat || null);
+        return;
+      }
       if (e.target.classList.contains('sub-pill')) {
         var subcat = e.target.dataset.subcat;
         renderCategory(currentCategory, subcat || null);

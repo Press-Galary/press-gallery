@@ -1,12 +1,14 @@
 [
   {
     "id": 1,
-    "title": "2026 秋冬时装周超级发布：30 个品牌定义新季风向",
+    "title": "2026 秋冬时装周：30 个品牌定义新季风向",
+    "originalTitle": "2026秋冬时装周超级发布：从米兰到巴黎，30个品牌如何定义新季潮流",
     "summary": "米兰、巴黎时装周接连上演重磅大秀，从极简剪裁到数字印花，本季各大品牌的创意总监交出了最强答卷。",
     "date": "2026-06-02",
     "url": "https://example.com/fashion-week-super",
     "category": "平台简介",
     "subcategory": "超级时装发布",
+    "subSubcategory": "秀场直击",
     "image": "https://picsum.photos/seed/platform1/800/500"
   },
   {
@@ -41,12 +43,14 @@
   },
   {
     "id": 5,
-    "title": "超级时装发布周报：Chanel 早春度假系列独家回顾",
+    "title": "Chanel 早春度假系列独家回顾",
+    "originalTitle": "超级时装发布周报：Virginie Viard在马赛呈现地中海视觉盛宴",
     "summary": "Virginie Viard 在马赛呈现了一场地中海风情的视觉盛宴，轻盈面料与大胆用色成为本季最具话题度的设计语言。",
     "date": "2026-05-25",
     "url": "https://example.com/chanel-cruise-review",
     "category": "平台简介",
     "subcategory": "超级时装发布",
+    "subSubcategory": "品牌专场",
     "image": "https://picsum.photos/seed/platform5/800/500"
   },
   {

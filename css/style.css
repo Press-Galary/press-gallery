@@ -287,6 +287,54 @@ h1, h2, h3 {
   border-color: var(--color-text);
 }
 
+/* Third-level sub-sub-category pills */
+.sub-sub-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.sub-sub-pill {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 400;
+  padding: 0.2rem 0.65rem;
+  border-radius: 100px;
+  border: 1px solid #ece5dc;
+  background: transparent;
+  color: #a09888;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.sub-sub-pill:hover {
+  border-color: #a09888;
+  color: #6b6358;
+}
+
+.sub-sub-pill.active {
+  background: #8b7355;
+  color: #ffffff;
+  border-color: #8b7355;
+}
+
+/* Original title (secondary title on cards) */
+.card__original-title {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #999;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: -0.15rem;
+}
+
 /* Sub-category section divider */
 .sub-section {
   margin-bottom: var(--spacing-md);

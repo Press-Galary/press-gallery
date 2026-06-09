@@ -114,7 +114,8 @@ textarea { resize: vertical; min-height: 60px; }
 
     <div class="form-grid" id="formGrid">
       <!-- Single mode fields -->
-      <div class="full" id="fgTitle"><label>标题 *</label><input id="fTitle" placeholder="文章标题"></div>
+      <div class="full" id="fgTitle"><label>标题 *</label><input id="fTitle" placeholder="概括标题（同事写的简短总结）"></div>
+      <div class="full" id="fgOrigTitle"><label>原标题</label><input id="fOriginalTitle" placeholder="新闻稿原本的标题（可选）"></div>
       <div class="full" id="fgSummary"><label>摘要 *</label><textarea id="fSummary" placeholder="简短摘要"></textarea></div>
       <div id="fgUrl"><label>原文链接 *</label><input id="fUrl" placeholder="https://..."></div>
 
@@ -124,7 +125,8 @@ textarea { resize: vertical; min-height: 60px; }
       <div><label>日期 *</label><input type="date" id="fDate"></div>
       <div><label>特殊模块</label><select id="fModule"><option value="">无</option><option value="红人之夜">红人之夜</option></select></div>
       <div><label>大分类 *</label><select id="fCategory" onchange="onCatChange()"></select></div>
-      <div><label>小分类</label><select id="fSubcategory"><option value="">无</option></select></div>
+      <div><label>小分类</label><select id="fSubcategory" onchange="onSubCatChange()"><option value="">无</option></select></div>
+      <div><label>小小分类</label><input id="fSubSubcategory" placeholder="自定义，或用下拉选已有" list="subSubList"><datalist id="subSubList"></datalist></div>
       <div class="full"><label>图片链接</label><input id="fImage" placeholder="https://... 留空则显示占位图"></div>
     </div>
 
@@ -323,11 +325,14 @@ function openAddForm(mode) {
   switchMode(currentMode);
 
   document.getElementById('fTitle').value = '';
+  document.getElementById('fOriginalTitle').value = '';
   document.getElementById('fSummary').value = '';
   document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
   document.getElementById('fUrl').value = '';
   document.getElementById('fSeriesName').value = '';
   document.getElementById('fCategory').value = CATS[0];
+  document.getElementById('fSubcategory').value = '';
+  document.getElementById('fSubSubcategory').value = '';
   document.getElementById('fImage').value = '';
   document.getElementById('fModule').value = '';
   document.getElementById('formHint').textContent = '';
@@ -353,11 +358,13 @@ function openEditForm(id) {
   switchMode(currentMode);
 
   document.getElementById('fTitle').value = a.title || '';
+  document.getElementById('fOriginalTitle').value = a.originalTitle || '';
   document.getElementById('fSummary').value = a.summary || '';
   document.getElementById('fDate').value = a.date || '';
   document.getElementById('fUrl').value = a.url || '';
   document.getElementById('fSeriesName').value = a.series || '';
   document.getElementById('fCategory').value = a.category || CATS[0];
+  document.getElementById('fSubSubcategory').value = a.subSubcategory || '';
   document.getElementById('fImage').value = a.image || '';
   document.getElementById('fModule').value = a.module || '';
   document.getElementById('formHint').textContent = a.series ? '(编辑系列中的单篇)更推荐在JSON中直接修改系列' : '';
@@ -378,6 +385,21 @@ function onCatChange() {
   if (subs.length === 0) {
     sel.innerHTML = '<option value="">无</option>';
   }
+  onSubCatChange();
+}
+
+function onSubCatChange() {
+  var cat = document.getElementById('fCategory').value;
+  var sub = document.getElementById('fSubcategory').value;
+  // Populate subSubcategory suggestions from existing data
+  var existing = [];
+  articles.forEach(function(a) {
+    if (a.subSubcategory && a.category === cat && a.subcategory === sub && existing.indexOf(a.subSubcategory) === -1) {
+      existing.push(a.subSubcategory);
+    }
+  });
+  var list = document.getElementById('subSubList');
+  list.innerHTML = existing.map(function(s) { return '<option value="' + s + '">'; }).join('');
 }
 
 /* ---- Save ---- */
@@ -389,11 +411,13 @@ function saveArticle() {
 
   // Single article mode
   var title = document.getElementById('fTitle').value.trim();
+  var origTitle = document.getElementById('fOriginalTitle').value.trim();
   var summary = document.getElementById('fSummary').value.trim();
   var date = document.getElementById('fDate').value;
   var url = document.getElementById('fUrl').value.trim();
   var cat = document.getElementById('fCategory').value;
   var sub = document.getElementById('fSubcategory').value;
+  var subSub = document.getElementById('fSubSubcategory').value.trim();
   var image = document.getElementById('fImage').value.trim();
   var mod = document.getElementById('fModule').value;
 
@@ -406,7 +430,9 @@ function saveArticle() {
     var a = articles.find(function(x) { return x.id === editingId; });
     if (a) {
       a.title = title; a.summary = summary; a.date = date; a.url = url;
-      a.category = cat; a.subcategory = sub || undefined; a.image = image || undefined;
+      a.category = cat; a.subcategory = sub || undefined; a.subSubcategory = subSub || undefined;
+      a.image = image || undefined;
+      if (origTitle) a.originalTitle = origTitle; else delete a.originalTitle;
       if (mod) a.module = mod; else delete a.module;
     }
     toast('文章 #' + editingId + ' 已更新 ✓');
@@ -418,6 +444,8 @@ function saveArticle() {
       image: image || undefined
     };
     if (sub) newArticle.subcategory = sub;
+    if (subSub) newArticle.subSubcategory = subSub;
+    if (origTitle) newArticle.originalTitle = origTitle;
     if (mod) newArticle.module = mod;
     articles.push(newArticle);
     toast('文章 #' + newArticle.id + ' 已添加 ✓ (记得导出!)');
