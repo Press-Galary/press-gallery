@@ -99,8 +99,23 @@ textarea { resize: vertical; min-height: 60px; }
     </select>
     <button class="btn btn-primary" onclick="openAddForm('single')">+ 新增文章</button>
     <button class="btn btn-outline" onclick="openAddForm('series')">+ 新增系列</button>
-    <button class="btn btn-export" onclick="exportJSON()">导出 JSON</button>
+    <button class="btn btn-export" onclick="publishToGitHub()">发布上线</button>
+    <button class="btn btn-outline btn-small" onclick="toggleSettings()">⚙</button>
     <span style="font-size:0.8rem;color:#666;margin-left:auto;" id="resultCount"></span>
+  </div>
+
+  <!-- Settings panel -->
+  <div class="form-panel" id="settingsPanel" style="margin-bottom:1.5rem;">
+    <h3>发布设置</h3>
+    <div style="display:flex;gap:0.5rem;align-items:end;flex-wrap:wrap;">
+      <div style="flex:1;min-width:260px;"><label>GitHub Token</label><input type="password" id="ghToken" placeholder="输入你的 Personal Access Token"></div>
+      <div style="flex:1;min-width:200px;"><label>仓库路径</label><input id="ghRepo" value="press-gallery/press-gallery" placeholder="owner/repo"></div>
+      <button class="btn btn-outline btn-small" onclick="saveSettings()">保存设置</button>
+    </div>
+    <p style="font-size:0.72rem;color:#999;margin-top:0.5rem;">
+      Token 需勾选 <strong>repo</strong> 权限。<a href="https://github.com/settings/tokens/new?scopes=repo&description=press-gallery-admin" target="_blank">点此创建 Classic Token</a>（过期选 No expiration）。
+      设置保存在浏览器本地，不会上传到服务器。
+    </p>
   </div>
 
   <div class="form-panel" id="formPanel">
@@ -529,6 +544,60 @@ function closeForm() {
 }
 
 /* ---- Export ---- */
+/* ---- Settings ---- */
+function toggleSettings() {
+  var p = document.getElementById('settingsPanel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+function saveSettings() {
+  localStorage.setItem('pg_gh_token', document.getElementById('ghToken').value.trim());
+  localStorage.setItem('pg_gh_repo', document.getElementById('ghRepo').value.trim());
+  toast('设置已保存 ✓');
+}
+function loadSettings() {
+  var t = localStorage.getItem('pg_gh_token');
+  var r = localStorage.getItem('pg_gh_repo');
+  if (t) document.getElementById('ghToken').value = t;
+  if (r) document.getElementById('ghRepo').value = r;
+}
+loadSettings();
+
+/* ---- Publish to GitHub ---- */
+function publishToGitHub() {
+  var token = document.getElementById('ghToken').value.trim();
+  var repo = document.getElementById('ghRepo').value.trim();
+  if (!token) { alert('请先在设置里填写 GitHub Token'); return; }
+  if (!repo) { alert('请填写仓库路径（如 press-gallery/press-gallery）'); return; }
+
+  var json = JSON.stringify(articles, null, 2);
+  var content = btoa(unescape(encodeURIComponent(json)));
+  var path = 'data/articles.json';
+
+  // Get current SHA
+  fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  }).then(function(r) {
+    if (!r.ok) throw new Error('获取文件信息失败 (HTTP ' + r.status + ')。请检查 token 和仓库名。');
+    return r.json();
+  }).then(function(f) {
+    return fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'Update articles via admin page (' + articles.length + ' articles)',
+        content: content,
+        sha: f.sha
+      })
+    });
+  }).then(function(r) {
+    if (!r.ok) throw new Error('发布失败 (HTTP ' + r.status + ')');
+    toast('发布成功 ✓ GitHub Pages 将在 1-2 分钟内更新');
+  }).catch(function(e) {
+    toast('发布失败: ' + e.message);
+    console.error(e);
+  });
+}
+
 function exportJSON() {
   var json = JSON.stringify(articles, null, 2);
   if (navigator.clipboard) {
