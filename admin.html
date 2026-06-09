@@ -477,6 +477,7 @@ function saveSeries() {
   var date = document.getElementById('fDate').value;
   var cat = document.getElementById('fCategory').value;
   var sub = document.getElementById('fSubcategory').value;
+  var subSub = document.getElementById('fSubSubcategory').value;
   var image = document.getElementById('fImage').value.trim();
   var oldSeries = document.getElementById('subItems').dataset.oldSeries;
 
@@ -521,6 +522,7 @@ function saveSeries() {
       image: image || undefined
     };
     if (sub) newArticle.subcategory = sub;
+    if (subSub) newArticle.subSubcategory = subSub;
     articles.push(newArticle);
   });
 
@@ -550,6 +552,7 @@ function openEditSeries(seriesName) {
   document.getElementById('fDate').value = first.date || '';
   document.getElementById('fCategory').value = first.category || CATS[0];
   document.getElementById('fSubcategory').value = first.subcategory || '';
+  document.getElementById('fSubSubcategory').value = first.subSubcategory || '';
   document.getElementById('fImage').value = first.image || '';
   document.getElementById('fModule').value = first.module || '';
   document.getElementById('formHint').textContent = '编辑系列：修改后保存，原文章将替换';
