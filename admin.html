@@ -275,7 +275,8 @@ function renderAll() {
           + '<td><span class="badge badge-cat">' + esc(a.category) + '</span>'
           + (a.subcategory ? ' <span class="badge badge-sub">' + esc(a.subcategory) + '</span>' : '')
           + '</td>'
-          + '<td><button class="btn btn-danger btn-small" onclick="deleteSeries(\'' + esc(a.series).replace(/'/g,"\\'") + '\')">删除系列</button></td>'
+          + '<td><button class="btn btn-outline btn-small" onclick="openEditSeries(\'' + esc(a.series).replace(/'/g,"\\'") + '\')">编辑</button> '
+          + '<button class="btn btn-danger btn-small" onclick="deleteSeries(\'' + esc(a.series).replace(/'/g,"\\'") + '\')">删除</button></td>'
           + '</tr>';
         members.forEach(function(m) {
           rowsHTML += '<tr class="row-child">'
@@ -477,10 +478,16 @@ function saveSeries() {
   var cat = document.getElementById('fCategory').value;
   var sub = document.getElementById('fSubcategory').value;
   var image = document.getElementById('fImage').value.trim();
+  var oldSeries = document.getElementById('subItems').dataset.oldSeries;
 
   if (!seriesName || !date || !cat) {
     document.getElementById('formHint').textContent = '请填写系列名称、日期和大分类';
     return;
+  }
+
+  // If editing, delete old series articles first
+  if (oldSeries) {
+    articles = articles.filter(function(a) { return a.series !== oldSeries; });
   }
 
   // Collect sub-articles
@@ -517,7 +524,7 @@ function saveSeries() {
     articles.push(newArticle);
   });
 
-  toast('系列 +"' + seriesName + '" 已添加 ' + subArticles.length + ' 篇文章 ✓ (记得导出!)');
+  toast('系列 \"' + seriesName + '\" 已' + (oldSeries ? '更新' : '添加') + ' ' + subArticles.length + ' 篇文章 ✓ (记得导出!)');
   closeForm();
   renderAll();
 }
@@ -528,6 +535,44 @@ function deleteArticle(id) {
   articles = articles.filter(function(a) { return a.id !== id; });
   renderAll();
   toast('文章 #' + id + ' 已删除 ✓ (记得导出!)');
+}
+
+function openEditSeries(seriesName) {
+  var seriesArts = articles.filter(function(a) { return a.series === seriesName; }).sort(function(a,b) { return a.id - b.id; });
+  if (seriesArts.length === 0) return;
+  var first = seriesArts[0];
+  editingId = null; // Not editing a single article
+  currentMode = 'series';
+  document.getElementById('formPanel').classList.add('open');
+  switchMode('series');
+
+  document.getElementById('fSeriesName').value = seriesName;
+  document.getElementById('fDate').value = first.date || '';
+  document.getElementById('fCategory').value = first.category || CATS[0];
+  document.getElementById('fSubcategory').value = first.subcategory || '';
+  document.getElementById('fImage').value = first.image || '';
+  document.getElementById('fModule').value = first.module || '';
+  document.getElementById('formHint').textContent = '编辑系列：修改后保存，原文章将替换';
+  document.getElementById('btnSave').textContent = '更新系列';
+  document.getElementById('subItems').innerHTML = '';
+  subItemCounter = 0;
+  onCatChange();
+
+  seriesArts.forEach(function(a) {
+    subItemCounter++;
+    var div = document.createElement('div');
+    div.className = 'sub-item';
+    div.id = 'subItem' + subItemCounter;
+    div.innerHTML = '<div class="sub-fields">'
+      + '<div class="sub-full"><label>标题 *</label><input data-field="title" value="' + esc(a.title) + '"></div>'
+      + '<div class="sub-full"><label>链接 *</label><input data-field="url" value="' + esc(a.url) + '"></div>'
+      + '<div class="sub-full"><label>摘要</label><input data-field="summary" value="' + esc(a.summary || '') + '"></div>'
+      + '</div>'
+      + '<button class="btn-remove" onclick="removeSubItem(\'subItem' + subItemCounter + '\')">✕</button>';
+    document.getElementById('subItems').appendChild(div);
+  });
+  // Store series name for saveSeries to know to replace
+  document.getElementById('subItems').dataset.oldSeries = seriesName;
 }
 
 function deleteSeries(seriesName) {
@@ -542,6 +587,7 @@ function closeForm() {
   document.getElementById('formPanel').classList.remove('open');
   editingId = null;
   document.getElementById('subItems').innerHTML = '';
+  document.getElementById('subItems').dataset.oldSeries = '';
 }
 
 /* ---- Export ---- */
