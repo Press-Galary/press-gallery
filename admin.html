@@ -25,18 +25,27 @@ body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 .btn-small { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
 .btn-export { background: #1a1a1a; color: #fff; }
 
+/* Mode toggle */
+.mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; width: fit-content; }
+.mode-toggle button { padding: 0.4rem 1.2rem; border: none; background: #fff; font-size: 0.82rem; cursor: pointer; font-weight: 500; color: #666; transition: all 0.2s; }
+.mode-toggle button.active { background: #1a1a1a; color: #fff; }
+.mode-toggle button:not(.active):hover { background: #f5f5f5; }
+
 /* Table */
 .table-wrap { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
 th { background: #fafafa; padding: 0.75rem 1rem; text-align: left; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: #666; border-bottom: 2px solid #eee; }
 td { padding: 0.6rem 1rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
 tr:hover td { background: #fafafa; }
+tr.row-series td { background: #fdfcfa; border-bottom: 1px solid #f0ece5; }
+tr.row-child td { background: #fefefe; font-size: 0.82rem; }
 td.title { font-weight: 600; max-width: 300px; }
 td.summary { color: #666; max-width: 350px; font-size: 0.8rem; }
 .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 100px; font-size: 0.7rem; font-weight: 500; }
 .badge-cat { background: #f4f0ff; color: #6741d9; }
 .badge-sub { background: #edf2ff; color: #3b5bdb; }
 .badge-mod { background: #fff4e6; color: #b8860b; }
+.badge-series { background: #f5f0e8; color: #8b7355; }
 
 /* Form */
 .form-panel { background: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: none; }
@@ -48,6 +57,17 @@ label { display: block; font-size: 0.78rem; font-weight: 600; margin-bottom: 0.2
 input, select, textarea { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
 textarea { resize: vertical; min-height: 60px; }
 .form-actions { margin-top: 1rem; display: flex; gap: 0.5rem; }
+
+/* Sub-articles */
+.sub-list { margin-top: 1rem; }
+.sub-list h4 { font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid #eee; }
+.sub-item { background: #fafaf9; border: 1px solid #eee; border-radius: 6px; padding: 0.75rem; margin-bottom: 0.5rem; display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 0.75rem; }
+.sub-item .sub-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.sub-item .sub-full { grid-column: 1/-1; }
+.sub-item label { font-size: 0.7rem; color: #888; }
+.sub-item input { font-size: 0.82rem; }
+.btn-remove { padding: 0.2rem 0.5rem; font-size: 0.75rem; background: none; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; color: #999; align-self: start; margin-top: 1.25rem; }
+.btn-remove:hover { background: #fee; color: #e53e3e; border-color: #e53e3e; }
 
 /* Stats */
 .stats { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -77,23 +97,44 @@ textarea { resize: vertical; min-height: 60px; }
     <select id="filterSub">
       <option value="">全部小分类</option>
     </select>
-    <button class="btn btn-primary" onclick="openAddForm()">+ 新增文章</button>
+    <button class="btn btn-primary" onclick="openAddForm('single')">+ 新增文章</button>
+    <button class="btn btn-outline" onclick="openAddForm('series')">+ 新增系列</button>
     <button class="btn btn-export" onclick="exportJSON()">导出 JSON</button>
     <span style="font-size:0.8rem;color:#666;margin-left:auto;" id="resultCount"></span>
   </div>
 
   <div class="form-panel" id="formPanel">
     <h3 id="formTitle">新增文章</h3>
-    <div class="form-grid">
-      <div class="full"><label>标题 *</label><input id="fTitle" placeholder="文章标题"></div>
-      <div class="full"><label>摘要 *</label><textarea id="fSummary" placeholder="简短摘要"></textarea></div>
+
+    <!-- Mode toggle -->
+    <div class="mode-toggle" id="modeToggle">
+      <button id="modeSingle" class="active" onclick="switchMode('single')">单篇文章</button>
+      <button id="modeSeries" onclick="switchMode('series')">系列合集</button>
+    </div>
+
+    <div class="form-grid" id="formGrid">
+      <!-- Single mode fields -->
+      <div class="full" id="fgTitle"><label>标题 *</label><input id="fTitle" placeholder="文章标题"></div>
+      <div class="full" id="fgSummary"><label>摘要 *</label><textarea id="fSummary" placeholder="简短摘要"></textarea></div>
+      <div id="fgUrl"><label>原文链接 *</label><input id="fUrl" placeholder="https://..."></div>
+
+      <!-- Series mode fields (hidden by default) -->
+      <div class="full" id="fgSeriesName" style="display:none"><label>系列名称 *</label><input id="fSeriesName" placeholder="例如：2026 夏季趋势特辑"></div>
+
       <div><label>日期 *</label><input type="date" id="fDate"></div>
-      <div><label>原文链接 *</label><input id="fUrl" placeholder="https://..."></div>
+      <div><label>特殊模块</label><select id="fModule"><option value="">无</option><option value="红人之夜">红人之夜</option></select></div>
       <div><label>大分类 *</label><select id="fCategory" onchange="onCatChange()"></select></div>
       <div><label>小分类</label><select id="fSubcategory"><option value="">无</option></select></div>
       <div class="full"><label>图片链接</label><input id="fImage" placeholder="https://... 留空则显示占位图"></div>
-      <div><label>特殊模块</label><select id="fModule"><option value="">无</option><option value="红人之夜">红人之夜</option></select></div>
     </div>
+
+    <!-- Sub-article list (series mode) -->
+    <div class="sub-list" id="subList" style="display:none">
+      <h4>子文章列表</h4>
+      <div id="subItems"></div>
+      <button class="btn btn-small btn-outline" onclick="addSubItem()" style="margin-top:0.5rem">+ 添加子文章</button>
+    </div>
+
     <div class="form-actions">
       <button class="btn btn-primary" id="btnSave" onclick="saveArticle()">保存</button>
       <button class="btn btn-outline" onclick="closeForm()">取消</button>
@@ -116,6 +157,8 @@ textarea { resize: vertical; min-height: 60px; }
 <script>
 var articles = [];
 var editingId = null;
+var currentMode = 'single';
+var subItemCounter = 0;
 
 var CATS = ['平台简介', '商家案例', '热点同款'];
 var SUBCATS = {
@@ -145,6 +188,42 @@ function initFilters() {
   document.getElementById('fCategory').innerHTML = CATS.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
 }
 
+/* ---- Mode switching ---- */
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('modeSingle').classList.toggle('active', mode === 'single');
+  document.getElementById('modeSeries').classList.toggle('active', mode === 'series');
+
+  var isSingle = mode === 'single';
+  document.getElementById('fgTitle').style.display = isSingle ? '' : 'none';
+  document.getElementById('fgSummary').style.display = isSingle ? '' : 'none';
+  document.getElementById('fgUrl').style.display = isSingle ? '' : 'none';
+  document.getElementById('fgSeriesName').style.display = isSingle ? 'none' : '';
+  document.getElementById('subList').style.display = isSingle ? 'none' : '';
+  document.getElementById('formTitle').textContent = isSingle ? (editingId ? '编辑文章' : '新增文章') : '新增系列合集';
+  document.getElementById('btnSave').textContent = isSingle ? '保存' : '保存系列';
+}
+
+function addSubItem() {
+  subItemCounter++;
+  var div = document.createElement('div');
+  div.className = 'sub-item';
+  div.id = 'subItem' + subItemCounter;
+  div.innerHTML = '<div class="sub-fields">'
+    + '<div class="sub-full"><label>标题 *</label><input data-field="title" placeholder="子文章标题"></div>'
+    + '<div class="sub-full"><label>链接 *</label><input data-field="url" placeholder="https://..."></div>'
+    + '<div class="sub-full"><label>摘要</label><input data-field="summary" placeholder="简短摘要（可选）"></div>'
+    + '</div>'
+    + '<button class="btn-remove" onclick="removeSubItem(\'subItem' + subItemCounter + '\')">✕</button>';
+  document.getElementById('subItems').appendChild(div);
+}
+
+function removeSubItem(id) {
+  var el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+/* ---- Rendering ---- */
 function renderAll() {
   var fCat = document.getElementById('filterCategory').value;
   var fSub = document.getElementById('filterSub').value;
@@ -154,8 +233,44 @@ function renderAll() {
 
   document.getElementById('resultCount').textContent = '显示 ' + filtered.length + ' / ' + articles.length + ' 篇';
 
-  document.getElementById('tableBody').innerHTML = filtered.map(function(a) {
-    return '<tr>'
+  // Group by series for display
+  var processed = {};
+  var rowsHTML = '';
+  filtered.forEach(function(a) {
+    if (a.series) {
+      if (!processed[a.series]) {
+        processed[a.series] = [];
+        filtered.forEach(function(x) {
+          if (x.series === a.series) processed[a.series].push(x);
+        });
+      }
+      if (processed[a.series] && processed[a.series][0] === a) {
+        // Render series group
+        var members = processed[a.series];
+        rowsHTML += '<tr class="row-series">'
+          + '<td colspan="2"><span class="badge badge-series">系列</span> <strong>' + esc(a.series) + '</strong> (' + members.length + ' 篇)</td>'
+          + '<td class="summary" style="font-size:0.78rem;color:#999">共享系列名，' + members.length + '篇子文章</td>'
+          + '<td>' + (a.date || '') + '</td>'
+          + '<td><span class="badge badge-cat">' + esc(a.category) + '</span>'
+          + (a.subcategory ? ' <span class="badge badge-sub">' + esc(a.subcategory) + '</span>' : '')
+          + '</td>'
+          + '<td><button class="btn btn-danger btn-small" onclick="deleteSeries(\'' + esc(a.series).replace(/'/g,"\\'") + '\')">删除系列</button></td>'
+          + '</tr>';
+        members.forEach(function(m) {
+          rowsHTML += '<tr class="row-child">'
+            + '<td>' + m.id + '</td>'
+            + '<td class="title" style="padding-left:1.5rem">└ ' + esc(m.title) + '</td>'
+            + '<td class="summary">' + esc(m.summary || '') + '</td>'
+            + '<td>' + (m.date || '') + '</td>'
+            + '<td></td>'
+            + '<td><button class="btn btn-outline btn-small" onclick="openEditForm(' + m.id + ')">编辑</button></td>'
+            + '</tr>';
+        });
+      }
+      return;
+    }
+    // Non-series article
+    rowsHTML += '<tr>'
       + '<td>' + a.id + '</td>'
       + '<td class="title">' + esc(a.title) + '</td>'
       + '<td class="summary">' + esc(a.summary || '') + '</td>'
@@ -163,13 +278,16 @@ function renderAll() {
       + '<td><span class="badge badge-cat">' + esc(a.category) + '</span>'
       + (a.subcategory ? ' <span class="badge badge-sub">' + esc(a.subcategory) + '</span>' : '')
       + (a.module ? ' <span class="badge badge-mod">' + esc(a.module) + '</span>' : '')
+      + (a.series ? ' <span class="badge badge-series">' + esc(a.series) + '</span>' : '')
       + '</td>'
       + '<td>'
       + '<button class="btn btn-outline btn-small" onclick="openEditForm(' + a.id + ')">编辑</button> '
       + '<button class="btn btn-danger btn-small" onclick="deleteArticle(' + a.id + ')">删除</button>'
       + '</td>'
       + '</tr>';
-  }).join('');
+  });
+
+  document.getElementById('tableBody').innerHTML = rowsHTML;
 
   // Update sub filter options
   var subSel = document.getElementById('filterSub');
@@ -197,41 +315,59 @@ function renderAll() {
   document.getElementById('stats').innerHTML = statsHTML;
 }
 
-function openAddForm() {
+/* ---- Form ---- */
+function openAddForm(mode) {
   editingId = null;
-  document.getElementById('formTitle').textContent = '新增文章';
+  currentMode = mode || 'single';
   document.getElementById('formPanel').classList.add('open');
+  switchMode(currentMode);
+
   document.getElementById('fTitle').value = '';
   document.getElementById('fSummary').value = '';
   document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
   document.getElementById('fUrl').value = '';
+  document.getElementById('fSeriesName').value = '';
   document.getElementById('fCategory').value = CATS[0];
   document.getElementById('fImage').value = '';
   document.getElementById('fModule').value = '';
-  document.getElementById('btnSave').textContent = '保存';
   document.getElementById('formHint').textContent = '';
+  document.getElementById('subItems').innerHTML = '';
+  subItemCounter = 0;
+
+  if (currentMode === 'series') {
+    addSubItem();
+    addSubItem();
+  }
+
   onCatChange();
-  document.getElementById('fTitle').focus();
+  if (currentMode === 'single') document.getElementById('fTitle').focus();
+  else document.getElementById('fSeriesName').focus();
 }
 
 function openEditForm(id) {
   var a = articles.find(function(x) { return x.id === id; });
   if (!a) return;
   editingId = id;
-  document.getElementById('formTitle').textContent = '编辑文章 #' + id;
+  currentMode = a.series ? 'series' : 'single';
   document.getElementById('formPanel').classList.add('open');
+  switchMode(currentMode);
+
   document.getElementById('fTitle').value = a.title || '';
   document.getElementById('fSummary').value = a.summary || '';
   document.getElementById('fDate').value = a.date || '';
   document.getElementById('fUrl').value = a.url || '';
+  document.getElementById('fSeriesName').value = a.series || '';
   document.getElementById('fCategory').value = a.category || CATS[0];
   document.getElementById('fImage').value = a.image || '';
   document.getElementById('fModule').value = a.module || '';
+  document.getElementById('formHint').textContent = a.series ? '(编辑系列中的单篇)更推荐在JSON中直接修改系列' : '';
+  document.getElementById('subItems').innerHTML = '';
+  subItemCounter = 0;
+
   document.getElementById('btnSave').textContent = '更新';
-  document.getElementById('formHint').textContent = '';
   onCatChange();
   document.getElementById('fSubcategory').value = a.subcategory || '';
-  document.getElementById('fTitle').focus();
+  if (currentMode === 'single') document.getElementById('fTitle').focus();
 }
 
 function onCatChange() {
@@ -244,7 +380,14 @@ function onCatChange() {
   }
 }
 
+/* ---- Save ---- */
 function saveArticle() {
+  if (currentMode === 'series') {
+    saveSeries();
+    return;
+  }
+
+  // Single article mode
   var title = document.getElementById('fTitle').value.trim();
   var summary = document.getElementById('fSummary').value.trim();
   var date = document.getElementById('fDate').value;
@@ -252,7 +395,7 @@ function saveArticle() {
   var cat = document.getElementById('fCategory').value;
   var sub = document.getElementById('fSubcategory').value;
   var image = document.getElementById('fImage').value.trim();
-  var module = document.getElementById('fModule').value;
+  var mod = document.getElementById('fModule').value;
 
   if (!title || !summary || !date || !url || !cat) {
     document.getElementById('formHint').textContent = '请填写所有必填项（标题、摘要、日期、链接、大分类）';
@@ -264,22 +407,18 @@ function saveArticle() {
     if (a) {
       a.title = title; a.summary = summary; a.date = date; a.url = url;
       a.category = cat; a.subcategory = sub || undefined; a.image = image || undefined;
-      if (module) a.module = module; else delete a.module;
+      if (mod) a.module = mod; else delete a.module;
     }
     toast('文章 #' + editingId + ' 已更新 ✓');
   } else {
     var maxId = articles.reduce(function(m, x) { return Math.max(m, x.id); }, 0);
     var newArticle = {
       id: maxId + 1,
-      title: title,
-      summary: summary,
-      date: date,
-      url: url,
-      category: cat,
+      title: title, summary: summary, date: date, url: url, category: cat,
       image: image || undefined
     };
     if (sub) newArticle.subcategory = sub;
-    if (module) newArticle.module = module;
+    if (mod) newArticle.module = mod;
     articles.push(newArticle);
     toast('文章 #' + newArticle.id + ' 已添加 ✓ (记得导出!)');
   }
@@ -288,6 +427,58 @@ function saveArticle() {
   renderAll();
 }
 
+function saveSeries() {
+  var seriesName = document.getElementById('fSeriesName').value.trim();
+  var date = document.getElementById('fDate').value;
+  var cat = document.getElementById('fCategory').value;
+  var sub = document.getElementById('fSubcategory').value;
+  var image = document.getElementById('fImage').value.trim();
+
+  if (!seriesName || !date || !cat) {
+    document.getElementById('formHint').textContent = '请填写系列名称、日期和大分类';
+    return;
+  }
+
+  // Collect sub-articles
+  var items = document.querySelectorAll('#subItems .sub-item');
+  var subArticles = [];
+  items.forEach(function(item) {
+    var titleEl = item.querySelector('[data-field="title"]');
+    var urlEl = item.querySelector('[data-field="url"]');
+    var summaryEl = item.querySelector('[data-field="summary"]');
+    var t = titleEl ? titleEl.value.trim() : '';
+    var u = urlEl ? urlEl.value.trim() : '';
+    var s = summaryEl ? summaryEl.value.trim() : '';
+    if (t && u) subArticles.push({ title: t, url: u, summary: s });
+  });
+
+  if (subArticles.length === 0) {
+    document.getElementById('formHint').textContent = '请至少添加一篇子文章（标题+链接）';
+    return;
+  }
+
+  var maxId = articles.reduce(function(m, x) { return Math.max(m, x.id); }, 0);
+  subArticles.forEach(function(sa, i) {
+    var newArticle = {
+      id: maxId + i + 1,
+      title: sa.title,
+      summary: sa.summary || sa.title,
+      date: date,
+      url: sa.url,
+      category: cat,
+      series: seriesName,
+      image: image || undefined
+    };
+    if (sub) newArticle.subcategory = sub;
+    articles.push(newArticle);
+  });
+
+  toast('系列 +"' + seriesName + '" 已添加 ' + subArticles.length + ' 篇文章 ✓ (记得导出!)');
+  closeForm();
+  renderAll();
+}
+
+/* ---- Delete ---- */
 function deleteArticle(id) {
   if (!confirm('确认删除文章 #' + id + '？')) return;
   articles = articles.filter(function(a) { return a.id !== id; });
@@ -295,11 +486,21 @@ function deleteArticle(id) {
   toast('文章 #' + id + ' 已删除 ✓ (记得导出!)');
 }
 
+function deleteSeries(seriesName) {
+  var n = articles.filter(function(a) { return a.series === seriesName; }).length;
+  if (!confirm('确认删除系列 +"' + seriesName + '" 及其 ' + n + ' 篇文章？')) return;
+  articles = articles.filter(function(a) { return a.series !== seriesName; });
+  renderAll();
+  toast('系列 +"' + seriesName + '" 已删除 ✓ (记得导出!)');
+}
+
 function closeForm() {
   document.getElementById('formPanel').classList.remove('open');
   editingId = null;
+  document.getElementById('subItems').innerHTML = '';
 }
 
+/* ---- Export ---- */
 function exportJSON() {
   var json = JSON.stringify(articles, null, 2);
   if (navigator.clipboard) {
