@@ -8,7 +8,7 @@
     "url": "https://example.com/fashion-week-super",
     "category": "平台简介",
     "subcategory": "超级时装发布",
-    "subSubcategory": "秀场直击",
+    "subSubcategory": "时装周专场",
     "image": "https://picsum.photos/seed/platform1/800/500"
   },
   {
@@ -50,7 +50,7 @@
     "url": "https://example.com/chanel-cruise-review",
     "category": "平台简介",
     "subcategory": "超级时装发布",
-    "subSubcategory": "品牌专场",
+    "subSubcategory": "品牌焕新",
     "image": "https://picsum.photos/seed/platform5/800/500"
   },
   {

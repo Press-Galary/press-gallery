@@ -141,7 +141,7 @@ textarea { resize: vertical; min-height: 60px; }
       <div><label>特殊模块</label><select id="fModule"><option value="">无</option><option value="红人之夜">红人之夜</option></select></div>
       <div><label>大分类 *</label><select id="fCategory" onchange="onCatChange()"></select></div>
       <div><label>小分类</label><select id="fSubcategory" onchange="onSubCatChange()"><option value="">无</option></select></div>
-      <div><label>小小分类</label><input id="fSubSubcategory" placeholder="自定义，或用下拉选已有" list="subSubList"><datalist id="subSubList"></datalist></div>
+      <div id="fgSubSub"><label>小小分类</label><select id="fSubSubcategory"><option value="">无</option></select></div>
       <div class="full"><label>图片链接</label><input id="fImage" placeholder="https://... 留空则显示占位图"></div>
     </div>
 
@@ -182,6 +182,10 @@ var SUBCATS = {
   '平台简介': ['超级时装发布', '原创保护', '趋势打爆-潮流热单', '新商入淘-爆发强劲'],
   '商家案例': ['IFASHION', '红人商家', '新商入淘'],
   '热点同款': []
+};
+
+var SUBSUBCATS = {
+  '超级时装发布': ['时装周专场', '四大家族', '红人商升咖', '国风来袭', '品牌焕新', '新锐设计']
 };
 
 // Load
@@ -404,17 +408,14 @@ function onCatChange() {
 }
 
 function onSubCatChange() {
-  var cat = document.getElementById('fCategory').value;
   var sub = document.getElementById('fSubcategory').value;
-  // Populate subSubcategory suggestions from existing data
-  var existing = [];
-  articles.forEach(function(a) {
-    if (a.subSubcategory && a.category === cat && a.subcategory === sub && existing.indexOf(a.subSubcategory) === -1) {
-      existing.push(a.subSubcategory);
-    }
-  });
-  var list = document.getElementById('subSubList');
-  list.innerHTML = existing.map(function(s) { return '<option value="' + s + '">'; }).join('');
+  var subSubs = SUBSUBCATS[sub] || [];
+  var sel = document.getElementById('fSubSubcategory');
+  if (subSubs.length > 0) {
+    sel.innerHTML = '<option value="">无</option>' + subSubs.map(function(s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
+  } else {
+    sel.innerHTML = '<option value="">无</option>';
+  }
 }
 
 /* ---- Save ---- */
