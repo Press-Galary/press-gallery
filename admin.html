@@ -131,7 +131,7 @@ textarea { resize: vertical; min-height: 60px; }
       <!-- Single mode fields -->
       <div class="full" id="fgTitle"><label>标题 *</label><input id="fTitle" placeholder="概括标题（同事写的简短总结）"></div>
       <div class="full" id="fgOrigTitle"><label>原标题</label><input id="fOriginalTitle" placeholder="新闻稿原本的标题（可选）"></div>
-      <div class="full" id="fgSummary"><label>摘要 *</label><textarea id="fSummary" placeholder="简短摘要"></textarea></div>
+      <div class="full" id="fgSummary"><label>摘要</label><textarea id="fSummary" placeholder="简短摘要（可选）"></textarea></div>
       <div id="fgUrl"><label>原文链接 *</label><input id="fUrl" placeholder="https://..."></div>
 
       <!-- Series mode fields (hidden by default) -->
@@ -436,8 +436,8 @@ function saveArticle() {
   var image = document.getElementById('fImage').value.trim();
   var mod = document.getElementById('fModule').value;
 
-  if (!title || !summary || !date || !url || !cat) {
-    document.getElementById('formHint').textContent = '请填写所有必填项（标题、摘要、日期、链接、大分类）';
+  if (!title || !date || !url || !cat) {
+    document.getElementById('formHint').textContent = '请填写所有必填项（标题、日期、链接、大分类）';
     return;
   }
 

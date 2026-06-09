@@ -298,7 +298,7 @@
         + '<span class="card__tag--inline">' + escapeHTML(article.category) + '</span>'
         + '<h2 class="card__title">' + escapeHTML(article.title) + '</h2>'
         + (article.originalTitle ? '<p class="card__original-title">' + escapeHTML(article.originalTitle) + '</p>' : '')
-        + '<p class="card__summary">' + escapeHTML(article.summary) + '</p>'
+        + (article.summary ? '<p class="card__summary">' + escapeHTML(article.summary) + '</p>' : '')
         + '<time class="card__date" datetime="' + article.date + '">' + formatDate(article.date) + '</time>'
         + '</div>'
         + '</a>';
@@ -314,7 +314,7 @@
         <div class="card__body">
           <h2 class="card__title">${escapeHTML(article.title)}</h2>
           ${article.originalTitle ? '<p class="card__original-title">' + escapeHTML(article.originalTitle) + '</p>' : ''}
-          <p class="card__summary">${escapeHTML(article.summary)}</p>
+          ${article.summary ? '<p class="card__summary">' + escapeHTML(article.summary) + '</p>' : ''}
           <time class="card__date" datetime="${article.date}">${formatDate(article.date)}</time>
         </div>
       </a>`;
@@ -372,7 +372,7 @@
       <a href="${escapeHTML(article.url)}" target="_blank" rel="noopener" class="article-link">
         <span class="article-link__title">${escapeHTML(article.title)}</span>
         ${article.originalTitle ? '<span class="card__original-title">' + escapeHTML(article.originalTitle) + '</span>' : ''}
-        <span class="article-link__summary">${escapeHTML(article.summary)}</span>
+        ${article.summary ? '<span class="article-link__summary">' + escapeHTML(article.summary) + '</span>' : ''}
         <time class="article-link__date">${formatDate(article.date)}</time>
       </a>`;
   }
