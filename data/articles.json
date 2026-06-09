@@ -7,27 +7,30 @@
     "url": "https://caijing.chinadaily.com.cn/a/202604/01/WS69ccd120a310942cc49a6080.html",
     "category": "平台简介",
     "series": "2026上海时装周：栖香锦✖️Northbutsouth",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 28,
-    "title": "上观新闻：当“淘品牌”走进时装周",
-    "summary": "上观新闻：当“淘品牌”走进时装周",
+    "title": "上观新闻：当"淘品牌"走进时装周",
+    "summary": "上观新闻：当"淘品牌"走进时装周",
     "date": "2026-06-09",
     "url": "https://www.shobserver.cn/journal/article/share?id=501718",
     "category": "平台简介",
     "series": "2026上海时装周：栖香锦✖️Northbutsouth",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 29,
-    "title": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，“新中式”定制成潮流样本",
-    "summary": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，“新中式”定制成潮流样本",
+    "title": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，"新中式"定制成潮流样本",
+    "summary": "腾讯：即看即买、全城秀场：2026上海时装周刷新数字化消费体验，"新中式"定制成潮流样本",
     "date": "2026-06-09",
     "url": "https://news.qq.com/rain/a/20260401A05Y6C00?suid=&media_id=",
     "category": "平台简介",
     "series": "2026上海时装周：栖香锦✖️Northbutsouth",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 30,
@@ -37,17 +40,19 @@
     "url": "https://www.sohu.com/a/934328991_116152",
     "category": "平台简介",
     "subcategory": "超级时装发布",
-    "originalTitle": "搜狐时尚：淘宝“组局”，时装周“造场”，多个服饰品牌亮相国际秀场"
+    "originalTitle": "搜狐时尚：淘宝"组局"，时装周"造场"，多个服饰品牌亮相国际秀场",
+    "subSubcategory": "时装周专场"
   },
   {
     "id": 31,
-    "title": "ELLE：单场直播破亿！CHICJOC携国际设计师+超模天团，定义“秀场即卖场”新标杆",
-    "summary": "ELLE：单场直播破亿！CHICJOC携国际设计师+超模天团，定义“秀场即卖场”新标杆",
+    "title": "ELLE：单场直播破亿！CHICJOC携国际设计师+超模天团，定义"秀场即卖场"新标杆",
+    "summary": "ELLE：单场直播破亿！CHICJOC携国际设计师+超模天团，定义"秀场即卖场"新标杆",
     "date": "2026-06-09",
     "url": "https://www.ellechina.com/preview/fashion/news/a63050829/17328869092/",
     "category": "平台简介",
     "series": "CHICJOC",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "品牌焕新"
   },
   {
     "id": 32,
@@ -57,7 +62,8 @@
     "url": "https://www.cosmopolitancn.com/fashion/detail/38342",
     "category": "平台简介",
     "series": "CHICJOC",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "品牌焕新"
   },
   {
     "id": 33,
@@ -67,16 +73,18 @@
     "url": "http://fashion.bazaar.com.cn/2024/1101/344354.shtml",
     "category": "平台简介",
     "series": "CHICJOC",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "品牌焕新"
   },
   {
     "id": 34,
-    "title": "VOGUE：服饰直播天花板！UNICA登上「超级时装发布」，成为首个采用4K画质直播间",
-    "summary": "VOGUE：服饰直播天花板！UNICA登上「超级时装发布」，成为首个采用4K画质直播间",
+    "title": "VOGUE：服饰直播天花板！UNICA登上"超级时装发布"，成为首个采用4K画质直播间",
+    "summary": "VOGUE：服饰直播天花板！UNICA登上"超级时装发布"，成为首个采用4K画质直播间",
     "date": "2026-06-09",
     "url": "http://www.chaoliuzhi.net/news/20250612/1968.html",
     "category": "平台简介",
     "series": "UNICA",
-    "subcategory": "超级时装发布"
+    "subcategory": "超级时装发布",
+    "subSubcategory": "新锐设计"
   }
 ]
