@@ -74,6 +74,13 @@ textarea { resize: vertical; min-height: 60px; }
 .stat { background: #fff; padding: 0.6rem 1rem; border-radius: 8px; font-size: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
 .stat strong { font-size: 1.2rem; }
 
+/* Image upload */
+.img-upload-row { display: flex; gap: 0.5rem; align-items: center; }
+.img-upload-row input[type="text"] { flex: 1; }
+.img-or { color: #999; font-size: 0.8rem; white-space: nowrap; }
+.img-hint { display: block; font-size: 0.7rem; color: #9370FB; margin-top: 0.25rem; min-height: 1em; }
+.img-hint.error { color: #e53e3e; }
+
 /* Toast */
 .toast { position: fixed; bottom: 2rem; right: 2rem; background: #1a1a1a; color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
 .toast.show { opacity: 1; }
@@ -142,7 +149,16 @@ textarea { resize: vertical; min-height: 60px; }
       <div><label>大分类 *</label><select id="fCategory" onchange="onCatChange()"></select></div>
       <div><label>小分类</label><select id="fSubcategory" onchange="onSubCatChange()"><option value="">无</option></select></div>
       <div id="fgSubSub"><label>小小分类</label><select id="fSubSubcategory"><option value="">无</option></select></div>
-      <div class="full"><label>图片链接</label><input id="fImage" placeholder="https://... 留空则显示占位图"></div>
+      <div class="full">
+        <label>图片</label>
+        <div class="img-upload-row">
+          <input id="fImage" placeholder="粘贴图片链接 https://... 留空则显示占位图">
+          <span class="img-or">或</span>
+          <input type="file" id="fImageFile" accept="image/*" onchange="uploadImage()" style="display:none">
+          <button type="button" class="btn btn-outline btn-small" onclick="document.getElementById('fImageFile').click(); return false;">📎 上传文件</button>
+        </div>
+        <span class="img-hint" id="imgHint"></span>
+      </div>
     </div>
 
     <!-- Sub-article list (series mode) -->
@@ -355,6 +371,9 @@ function openAddForm(mode) {
   document.getElementById('fSubcategory').value = '';
   document.getElementById('fSubSubcategory').value = '';
   document.getElementById('fImage').value = '';
+  document.getElementById('fImageFile').value = '';
+  document.getElementById('imgHint').textContent = '';
+  document.getElementById('imgHint').className = 'img-hint';
   document.getElementById('fModule').value = '';
   document.getElementById('formHint').textContent = '';
   document.getElementById('subItems').innerHTML = '';
@@ -387,6 +406,9 @@ function openEditForm(id) {
   document.getElementById('fCategory').value = a.category || CATS[0];
   document.getElementById('fSubSubcategory').value = a.subSubcategory || '';
   document.getElementById('fImage').value = a.image || '';
+  document.getElementById('fImageFile').value = '';
+  document.getElementById('imgHint').textContent = '';
+  document.getElementById('imgHint').className = 'img-hint';
   document.getElementById('fModule').value = a.module || '';
   document.getElementById('formHint').textContent = a.series ? '(编辑系列中的单篇)更推荐在JSON中直接修改系列' : '';
   document.getElementById('subItems').innerHTML = '';
@@ -592,6 +614,67 @@ function closeForm() {
   editingId = null;
   document.getElementById('subItems').innerHTML = '';
   document.getElementById('subItems').dataset.oldSeries = '';
+}
+
+/* ---- Image Upload ---- */
+function uploadImage() {
+  var fileInput = document.getElementById('fImageFile');
+  var file = fileInput.files[0];
+  var hint = document.getElementById('imgHint');
+  if (!file) return;
+
+  var token = document.getElementById('ghToken').value.trim();
+  var repo = document.getElementById('ghRepo').value.trim();
+  if (!token || !repo) {
+    hint.textContent = '请先在 ⚙ 设置里填写 GitHub Token 和仓库路径';
+    hint.className = 'img-hint error';
+    fileInput.value = '';
+    return;
+  }
+
+  // Generate unique filename
+  var ext = file.name.split('.').pop() || 'png';
+  var ts = new Date().toISOString().replace(/[:.]/g, '-');
+  var filename = ts + '-' + file.name.replace(/[^a-zA-Z0-9一-龥._-]/g, '_');
+  var path = 'images/' + filename;
+
+  hint.textContent = '上传中...';
+  hint.className = 'img-hint';
+
+  var reader = new FileReader();
+  reader.onload = function() {
+    // reader.result is data:image/png;base64,xxxx
+    var base64 = reader.result.split(',')[1];
+
+    // Upload to GitHub
+    fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'Upload image: ' + filename,
+        content: base64
+      })
+    }).then(function(r) {
+      if (!r.ok) throw new Error('上传失败 (HTTP ' + r.status + ')');
+      return r.json();
+    }).then(function(data) {
+      // Use the download_url from GitHub response
+      var url = data.content.download_url;
+      document.getElementById('fImage').value = url;
+      hint.textContent = '上传成功 ✓ ' + filename;
+      hint.className = 'img-hint';
+      fileInput.value = '';
+    }).catch(function(e) {
+      hint.textContent = '上传失败: ' + e.message;
+      hint.className = 'img-hint error';
+      fileInput.value = '';
+    });
+  };
+  reader.readAsDataURL(file);
 }
 
 /* ---- Export ---- */
