@@ -99,6 +99,17 @@
     "subSubcategory": "四大家族"
   },
   {
+    "id": 11,
+    "title": "亿邦动力：不是带货，是带火！“顶奢国风”一夜卖800万，「超级时装发布」让“香云纱”火出圈",
+    "summary": "亿邦动力：不是带货，是带火！“顶奢国风”一夜卖800万，「超级时装发布」让“香云纱”火出圈",
+    "date": "2026-06-09",
+    "url": "https://m.ebrun.com/576820.html?share_from=pc&share_to=groupmessage",
+    "category": "平台简介",
+    "series": "栖香锦✖️朴絮✖️万象有衣",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "国风来袭"
+  },
+  {
     "id": 12,
     "title": "中国日报：成交破2000万！栖香锦、Northbutsouth超级时装发布再创峰值！",
     "summary": "栖香锦第三次大秀",
@@ -242,6 +253,17 @@
     "subSubcategory": "国风来袭"
   },
   {
+    "id": 25,
+    "title": "栖香锦第三次大秀——凤凰财经：超550万！直播成交再破纪录只是开始，栖香锦在淘宝的品牌化之路按下加速键",
+    "summary": "栖香锦第三次大秀——凤凰财经：超550万！直播成交再破纪录只是开始，栖香锦在淘宝的品牌化之路按下加速键",
+    "date": "2026-06-12",
+    "url": "https://finance.ifeng.com/c/8maii6Za8MC",
+    "category": "平台简介",
+    "series": "栖香锦✖️朴絮✖️万象有衣",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "国风来袭"
+  },
+  {
     "id": 26,
     "title": "alright then",
     "summary": "",
@@ -288,5 +310,32 @@
     "url": "https://www.ellechina.com/fashion/news/a63675380/17387669962/",
     "category": "热点同款",
     "originalTitle": "么？杨幂也是“淘宝女孩”！国风私服带火一众淘宝店"
+  },
+  {
+    "id": 33,
+    "title": "春晚带火一大波同款，有爆品全网热卖上千万元",
+    "summary": "春晚带火一大波同款，有爆品全网热卖上千万元",
+    "date": "2026-06-24",
+    "url": "https://mp.weixin.qq.com/s/pHo0Rxuzkgvi_sLpVqmmhw",
+    "category": "热点同款",
+    "series": "蛇年春晚同款系列到报道"
+  },
+  {
+    "id": 34,
+    "title": "超过王菲！这届春晚带货顶流，是她！",
+    "summary": "超过王菲！这届春晚带货顶流，是她！",
+    "date": "2026-06-24",
+    "url": "https://mp.weixin.qq.com/s/0ZbNciSGqA-4ncPAKMsfcQ",
+    "category": "热点同款",
+    "series": "蛇年春晚同款系列到报道"
+  },
+  {
+    "id": 35,
+    "title": "王菲耳环让虾片成爆款，这届春晚才是大型直播带货现场",
+    "summary": "王菲耳环让虾片成爆款，这届春晚才是大型直播带货现场",
+    "date": "2026-06-24",
+    "url": "https://mp.weixin.qq.com/s/9rpVVBqnf0Jv9nKojvkJjA",
+    "category": "热点同款",
+    "series": "蛇年春晚同款系列到报道"
   }
 ]
