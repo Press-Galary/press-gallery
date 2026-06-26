@@ -2,9 +2,9 @@
   const CATEGORIES = ['平台简介', '商家案例', '热点同款'];
 
   const CATEGORY_IMAGES = {
-    '平台简介': 'https://picsum.photos/seed/platform-cat/800/1066',
-    '商家案例': 'https://picsum.photos/seed/merchant-cat/800/1066',
-    '热点同款': 'https://picsum.photos/seed/trending-cat/800/1066'
+    '平台简介': 'images/平台简介.png',
+    '商家案例': 'images/商家案例.png',
+    '热点同款': 'images/热点同款.jpeg'
   };
 
   let articles = [];
