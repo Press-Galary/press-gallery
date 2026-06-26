@@ -245,7 +245,7 @@
   function createModuleCard(modArticles) {
     return '<a href="#" class="module-card" data-subcat="红人商家">'
       + '<div class="module-card__title">✦ 红人之夜</div>'
-      + '<div class="module-card__intro">平台年度盛事，汇聚头部红人与品牌，共话内容电商新趋势。</div>'
+      + '<div class="module-card__intro">除了流量激励与扶植，淘宝积极攒局造场，给红人展示空间并提升品牌调性。「服饰新人王」与连续三届的「红人之夜」，都是极其重要的场合。红人之夜之于红人，如奥斯卡之于电影人——不仅是淘宝红人的高光时刻，更是中国新生代原创品牌的集体亮相。</div>'
       + '<div class="module-card__links">'
       + modArticles.slice(0, 3).map(function (a) {
           return '<span class="module-card__link">' + escapeHTML(a.title) + '</span>';
@@ -258,7 +258,7 @@
   function createSidebarModule(modArticles) {
     return '<aside class="sidebar-module">'
       + '<div class="sidebar-module__title">✦ 红人之夜</div>'
-      + '<p class="sidebar-module__intro">平台年度盛事，汇聚头部红人与品牌，共话内容电商新趋势。本期呈现活动精彩回顾与深度专访。</p>'
+      + '<p class="sidebar-module__intro">除了流量激励与扶植，淘宝还积极攒局造场，给红人自我展示的空间，并帮助提升品牌调性。「服饰新人王」和已经连续举办了三届的「红人之夜」，都是极其重要的场合。<br><br>红人之夜之于红人，就相当于奥斯卡之于电影人、格莱美之于音乐人。红人之夜所展现的，不仅是淘宝红人的高光时刻，更是中国新生代原创品牌的集体亮相。各大时装周的门槛较高，只有相对成熟的大品牌才有机会露脸。然而，中国还有大量新生的原创品牌亟待被看见，淘宝红人之夜给这些新锐品牌提供了一个展示的舞台。<br><br>而「服饰新人王」，则是淘宝用"内娱造星"的规格，捧红服饰主理人。参赛的红人新商可获得时尚大刊合作资源、S+级综艺曝光、PK互动玩法，以及平台补贴等。</p>'
       + '<div class="sidebar-module__links">'
       + modArticles.map(function (a) {
           return '<a href="' + escapeHTML(a.url) + '" target="_blank" rel="noopener" class="sidebar-link">'
