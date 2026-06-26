@@ -12,39 +12,6 @@
     "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-22-40-878Z-北京时装周.png"
   },
   {
-    "id": 5,
-    "title": "ELLE：单场直播破亿！CHICJOC携国际设计师+超模天团，定义“秀场即卖场”新标杆",
-    "summary": "ELLE：单场直播破亿！CHICJOC携国际设计师+超模天团，定义“秀场即卖场”新标杆",
-    "date": "2026-06-09",
-    "url": "https://www.ellechina.com/preview/fashion/news/a63050829/17328869092/",
-    "category": "平台简介",
-    "series": "CHICJOC",
-    "subcategory": "超级时装发布",
-    "subSubcategory": "四大家族"
-  },
-  {
-    "id": 6,
-    "title": "时尚COSMO：把米兰时装周搬进直播间？CHICJOC登顶带货榜，淘宝再造服饰直播新标杆",
-    "summary": "时尚COSMO：把米兰时装周搬进直播间？CHICJOC登顶带货榜，淘宝再造服饰直播新标杆",
-    "date": "2026-06-09",
-    "url": "https://www.cosmopolitancn.com/fashion/detail/38342",
-    "category": "平台简介",
-    "series": "CHICJOC",
-    "subcategory": "超级时装发布",
-    "subSubcategory": "四大家族"
-  },
-  {
-    "id": 7,
-    "title": "时尚芭莎：CHICJOC赛高！首个走向国际的淘宝原生服饰品牌",
-    "summary": "时尚芭莎：CHICJOC赛高！首个走向国际的淘宝原生服饰品牌",
-    "date": "2026-06-09",
-    "url": "http://fashion.bazaar.com.cn/2024/1101/344354.shtml",
-    "category": "平台简介",
-    "series": "CHICJOC",
-    "subcategory": "超级时装发布",
-    "subSubcategory": "四大家族"
-  },
-  {
     "id": 9,
     "title": "时尚芭莎：谁说艺术感的直播不带货？开间KEIGAN「超级时装发布」专场破其店播成交纪录",
     "summary": "时尚芭莎：谁说艺术感的直播不带货？开间KEIGAN「超级时装发布」专场破其店播成交纪录",
@@ -52,17 +19,6 @@
     "url": "http://fashion.bazaar.com.cn/2024/1213/345167.shtml",
     "category": "平台简介",
     "series": "开间KEIGAN",
-    "subcategory": "超级时装发布",
-    "subSubcategory": "四大家族"
-  },
-  {
-    "id": 10,
-    "title": "VOGUE：服饰直播天花板！UNICA登上「超级时装发布」，成为首个采用4K画质直播间",
-    "summary": "VOGUE：服饰直播天花板！UNICA登上「超级时装发布」，成为首个采用4K画质直播间",
-    "date": "2026-06-09",
-    "url": "http://www.chaoliuzhi.net/news/20250612/1968.html",
-    "category": "平台简介",
-    "series": "UNICA",
     "subcategory": "超级时装发布",
     "subSubcategory": "四大家族"
   },
@@ -905,5 +861,50 @@
     "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-16-09-167Z-image__8_.png",
     "subcategory": "超级时装发布",
     "subSubcategory": "时装周专场"
+  },
+  {
+    "id": 99,
+    "title": "UNICA",
+    "summary": "",
+    "date": "2025-06-19",
+    "url": "https://www.vogue.com.cn/fashion/brand_news/news_14226ed213942180.html",
+    "category": "平台简介",
+    "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-32-47-731Z-image__8_.png",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "四大家族",
+    "originalTitle": "服饰直播天花板！UNICA登上「超级时装发布」，成为首个采用4K画质直播间"
+  },
+  {
+    "id": 100,
+    "title": "首场大秀：单场直播破亿！CHICJOC携国际设计师+超模天团，定义“秀场即卖场”新标杆",
+    "summary": "首场大秀：单场直播破亿！CHICJOC携国际设计师+超模天团，定义“秀场即卖场”新标杆",
+    "date": "2025-10-28",
+    "url": "https://www.ellechina.com/preview/fashion/news/a63050829/17328869092/",
+    "category": "平台简介",
+    "series": "CHICJOC",
+    "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-38-00-481Z-image__8_.png",
+    "subcategory": "超级时装发布"
+  },
+  {
+    "id": 101,
+    "title": "首场大秀：把米兰时装周搬进直播间？CHICJOC登顶带货榜，淘宝再造服饰直播新标杆",
+    "summary": "首场大秀：把米兰时装周搬进直播间？CHICJOC登顶带货榜，淘宝再造服饰直播新标杆",
+    "date": "2025-10-28",
+    "url": "https://www.cosmopolitancn.com/fashion/detail/38342",
+    "category": "平台简介",
+    "series": "CHICJOC",
+    "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-38-00-481Z-image__8_.png",
+    "subcategory": "超级时装发布"
+  },
+  {
+    "id": 102,
+    "title": "第二场大秀：CHICJOC赛高！首个走向国际的淘宝原生服饰品牌",
+    "summary": "第二场大秀：CHICJOC赛高！首个走向国际的淘宝原生服饰品牌",
+    "date": "2025-10-28",
+    "url": "http://fashion.bazaar.com.cn/2024/1101/344354.shtml",
+    "category": "平台简介",
+    "series": "CHICJOC",
+    "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-38-00-481Z-image__8_.png",
+    "subcategory": "超级时装发布"
   }
 ]
