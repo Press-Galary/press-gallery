@@ -737,6 +737,34 @@ h1, h2, h3 {
   margin-top: auto;
 }
 
+/* ---- Subcategory capsules ---- */
+.card__capsules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.card__capsule {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  background: #f4f0ff;
+  color: #6741d9;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  position: relative;
+  z-index: 2;
+}
+
+.card__capsule:hover {
+  background: #e2d9ff;
+  transform: scale(1.05);
+}
+
 /* Text-only card (no image) */
 .card--text-only {
   background: #fafaf9;

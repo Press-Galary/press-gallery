@@ -147,7 +147,7 @@ textarea { resize: vertical; min-height: 60px; }
       <div><label>日期 *</label><input type="date" id="fDate"></div>
       <div><label>特殊模块</label><select id="fModule"><option value="">无</option><option value="红人之夜">红人之夜</option></select></div>
       <div><label>大分类 *</label><select id="fCategory" onchange="onCatChange()"></select></div>
-      <div><label>小分类</label><select id="fSubcategory" onchange="onSubCatChange()"><option value="">无</option></select></div>
+      <div id="fSubcategoryWrap"><label>小分类</label><select id="fSubcategory" onchange="onSubCatChange()"><option value="">无</option></select></div>
       <div id="fgSubSub"><label>小小分类</label><select id="fSubSubcategory"><option value="">无</option></select></div>
       <div class="full">
         <label>图片</label>
@@ -261,12 +261,22 @@ function removeSubItem(id) {
 }
 
 /* ---- Rendering ---- */
+function getSubs(arr) {
+  return Array.isArray(arr) ? arr : (arr ? [arr] : []);
+}
+function renderSubBadges(article) {
+  var subs = getSubs(article.subcategory);
+  return subs.map(function(s) { return ' <span class="badge badge-sub">' + esc(s) + '</span>'; }).join('');
+}
 function renderAll() {
   var fCat = document.getElementById('filterCategory').value;
   var fSub = document.getElementById('filterSub').value;
   var filtered = articles.slice().sort(function(a,b) { return b.id - a.id; });
   if (fCat) filtered = filtered.filter(function(a) { return a.category === fCat; });
-  if (fSub) filtered = filtered.filter(function(a) { return a.subcategory === fSub; });
+  if (fSub) filtered = filtered.filter(function(a) {
+    var subs = Array.isArray(a.subcategory) ? a.subcategory : (a.subcategory ? [a.subcategory] : []);
+    return subs.indexOf(fSub) !== -1;
+  });
 
   document.getElementById('resultCount').textContent = '显示 ' + filtered.length + ' / ' + articles.length + ' 篇';
 
@@ -289,7 +299,7 @@ function renderAll() {
           + '<td class="summary" style="font-size:0.78rem;color:#999">共享系列名，' + members.length + '篇子文章</td>'
           + '<td>' + (a.date || '') + '</td>'
           + '<td><span class="badge badge-cat">' + esc(a.category) + '</span>'
-          + (a.subcategory ? ' <span class="badge badge-sub">' + esc(a.subcategory) + '</span>' : '')
+          + renderSubBadges(a)
           + '</td>'
           + '<td><button class="btn btn-outline btn-small" onclick="openEditSeries(\'' + esc(a.series).replace(/'/g,"\\'") + '\')">编辑</button> '
           + '<button class="btn btn-danger btn-small" onclick="deleteSeries(\'' + esc(a.series).replace(/'/g,"\\'") + '\')">删除</button></td>'
@@ -315,7 +325,7 @@ function renderAll() {
       + '<td class="summary">' + esc(a.summary || '') + '</td>'
       + '<td style="white-space:nowrap">' + (a.date || '') + '</td>'
       + '<td><span class="badge badge-cat">' + esc(a.category) + '</span>'
-      + (a.subcategory ? ' <span class="badge badge-sub">' + esc(a.subcategory) + '</span>' : '')
+      + renderSubBadges(a)
       + (a.module ? ' <span class="badge badge-mod">' + esc(a.module) + '</span>' : '')
       + (a.series ? ' <span class="badge badge-series">' + esc(a.series) + '</span>' : '')
       + '</td>'
@@ -334,9 +344,12 @@ function renderAll() {
   subSel.innerHTML = '<option value="">全部小分类</option>';
   var subs = [];
   articles.forEach(function(a) {
-    if (a.subcategory && (!fCat || a.category === fCat) && subs.indexOf(a.subcategory) === -1) {
-      subs.push(a.subcategory);
-    }
+    var sList = getSubs(a.subcategory);
+    sList.forEach(function(s) {
+      if (s && (!fCat || a.category === fCat) && subs.indexOf(s) === -1) {
+        subs.push(s);
+      }
+    });
   });
   subs.forEach(function(s) {
     var opt = document.createElement('option');
@@ -368,7 +381,7 @@ function openAddForm(mode) {
   document.getElementById('fUrl').value = '';
   document.getElementById('fSeriesName').value = '';
   document.getElementById('fCategory').value = CATS[0];
-  document.getElementById('fSubcategory').value = '';
+  setSubcategoryValue('');
   document.getElementById('fSubSubcategory').value = '';
   document.getElementById('fImage').value = '';
   document.getElementById('fImageFile').value = '';
@@ -416,29 +429,72 @@ function openEditForm(id) {
 
   document.getElementById('btnSave').textContent = '更新';
   onCatChange();
-  document.getElementById('fSubcategory').value = a.subcategory || '';
+  setSubcategoryValue(a.subcategory);
   if (currentMode === 'single') document.getElementById('fTitle').focus();
 }
 
 function onCatChange() {
   var cat = document.getElementById('fCategory').value;
-  var sel = document.getElementById('fSubcategory');
   var subs = SUBCATS[cat] || [];
-  sel.innerHTML = subs.map(function(s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
-  if (subs.length === 0) {
-    sel.innerHTML = '<option value="">无</option>';
+  var wrap = document.getElementById('fSubcategoryWrap');
+
+  if (cat === '商家案例') {
+    var html = '<label style="font-size:0.78rem;font-weight:600;margin-bottom:0.25rem;color:#555;">小分类（可多选）</label>';
+    html += '<div style="display:flex;gap:1rem;flex-wrap:wrap;">';
+    subs.forEach(function(s) {
+      html += '<label style="font-weight:400;display:flex;align-items:center;gap:0.3rem;cursor:pointer;font-size:0.85rem;">'
+        + '<input type="checkbox" name="subcatCb" value="' + s + '" onchange="onSubCatChange()"> ' + s
+        + '</label>';
+    });
+    html += '</div>';
+    wrap.innerHTML = html;
+  } else {
+    var selHTML = '<label>小分类</label><select id="fSubcategory" onchange="onSubCatChange()">';
+    if (subs.length === 0) {
+      selHTML += '<option value="">无</option>';
+    } else {
+      selHTML += subs.map(function(s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
+    }
+    selHTML += '</select>';
+    wrap.innerHTML = selHTML;
   }
   onSubCatChange();
 }
 
 function onSubCatChange() {
-  var sub = document.getElementById('fSubcategory').value;
+  var fSub = document.getElementById('fSubcategory');
+  var sub = fSub ? fSub.value : '';
   var subSubs = SUBSUBCATS[sub] || [];
   var sel = document.getElementById('fSubSubcategory');
   if (subSubs.length > 0) {
     sel.innerHTML = '<option value="">无</option>' + subSubs.map(function(s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
   } else {
     sel.innerHTML = '<option value="">无</option>';
+  }
+}
+
+function getSubcategoryValue() {
+  var cat = document.getElementById('fCategory').value;
+  if (cat === '商家案例') {
+    var checked = document.querySelectorAll('input[name="subcatCb"]:checked');
+    var vals = [];
+    checked.forEach(function(cb) { vals.push(cb.value); });
+    return vals.length === 0 ? '' : (vals.length === 1 ? vals[0] : vals);
+  }
+  var fSub = document.getElementById('fSubcategory');
+  return fSub ? fSub.value : '';
+}
+
+function setSubcategoryValue(val) {
+  var cat = document.getElementById('fCategory').value;
+  if (cat === '商家案例') {
+    var vals = Array.isArray(val) ? val : (val ? [val] : []);
+    document.querySelectorAll('input[name="subcatCb"]').forEach(function(cb) {
+      cb.checked = vals.indexOf(cb.value) !== -1;
+    });
+  } else {
+    var fSub = document.getElementById('fSubcategory');
+    if (fSub) fSub.value = val || '';
   }
 }
 
@@ -456,7 +512,7 @@ function saveArticle() {
   var date = document.getElementById('fDate').value;
   var url = document.getElementById('fUrl').value.trim();
   var cat = document.getElementById('fCategory').value;
-  var sub = document.getElementById('fSubcategory').value;
+  var sub = getSubcategoryValue();
   var subSub = document.getElementById('fSubSubcategory').value.trim();
   var image = document.getElementById('fImage').value.trim();
   var mod = document.getElementById('fModule').value;
@@ -499,7 +555,7 @@ function saveSeries() {
   var seriesName = document.getElementById('fSeriesName').value.trim();
   var date = document.getElementById('fDate').value;
   var cat = document.getElementById('fCategory').value;
-  var sub = document.getElementById('fSubcategory').value;
+  var sub = getSubcategoryValue();
   var subSub = document.getElementById('fSubSubcategory').value;
   var image = document.getElementById('fImage').value.trim();
   var oldSeries = document.getElementById('subItems').dataset.oldSeries;
@@ -574,7 +630,7 @@ function openEditSeries(seriesName) {
   document.getElementById('fSeriesName').value = seriesName;
   document.getElementById('fDate').value = first.date || '';
   document.getElementById('fCategory').value = first.category || CATS[0];
-  document.getElementById('fSubcategory').value = first.subcategory || '';
+  setSubcategoryValue(first.subcategory);
   document.getElementById('fSubSubcategory').value = first.subSubcategory || '';
   document.getElementById('fImage').value = first.image || '';
   document.getElementById('fModule').value = first.module || '';

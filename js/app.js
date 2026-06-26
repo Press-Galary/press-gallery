@@ -15,6 +15,13 @@
   let currentSearch = '';
   let searchTimer = null;
 
+  /* ---- Helper: normalize subcategory to array ---- */
+  function getSubcategories(article) {
+    if (!article.subcategory) return [];
+    if (Array.isArray(article.subcategory)) return article.subcategory;
+    return [article.subcategory];
+  }
+
   /* ---- DOM refs ---- */
   const categoryPills = document.getElementById('categoryPills');
   const searchInput = document.getElementById('searchInput');
@@ -118,14 +125,15 @@
     // Extract unique subcategories
     var subcats = [];
     catArticles.forEach(function (a) {
-      if (a.subcategory && subcats.indexOf(a.subcategory) === -1) {
-        subcats.push(a.subcategory);
-      }
+      var subs = getSubcategories(a);
+      subs.forEach(function (s) {
+        if (subcats.indexOf(s) === -1) subcats.push(s);
+      });
     });
 
     // Filter by subcategory if specified
     if (subcat) {
-      catArticles = catArticles.filter(function (a) { return a.subcategory === subcat; });
+      catArticles = catArticles.filter(function (a) { return getSubcategories(a).indexOf(subcat) !== -1; });
     }
 
     // Extract unique sub-subcategories (only when a subcat is active)
@@ -187,7 +195,7 @@
     } else {
       // Default: show each sub-category as a lightweight section
       bodyHTML = subcats.map(function (s) {
-        var subArticles = catArticles.filter(function (a) { return a.subcategory === s; });
+        var subArticles = catArticles.filter(function (a) { return getSubcategories(a).indexOf(s) !== -1; });
         if (subArticles.length === 0) return '';
 
         if (s === '红人商家') {
@@ -299,6 +307,7 @@
         + '<h2 class="card__title">' + escapeHTML(article.title) + '</h2>'
         + (article.originalTitle ? '<p class="card__original-title">' + escapeHTML(article.originalTitle) + '</p>' : '')
         + (article.summary ? '<p class="card__summary">' + escapeHTML(article.summary) + '</p>' : '')
+        + renderCapsules(article)
         + '<time class="card__date" datetime="' + article.date + '">' + formatDate(article.date) + '</time>'
         + '</div>'
         + '</a>';
@@ -315,6 +324,7 @@
           <h2 class="card__title">${escapeHTML(article.title)}</h2>
           ${article.originalTitle ? '<p class="card__original-title">' + escapeHTML(article.originalTitle) + '</p>' : ''}
           ${article.summary ? '<p class="card__summary">' + escapeHTML(article.summary) + '</p>' : ''}
+          ${renderCapsules(article)}
           <time class="card__date" datetime="${article.date}">${formatDate(article.date)}</time>
         </div>
       </a>`;
@@ -373,8 +383,20 @@
         <span class="article-link__title">${escapeHTML(article.title)}</span>
         ${article.originalTitle ? '<span class="card__original-title">' + escapeHTML(article.originalTitle) + '</span>' : ''}
         ${article.summary ? '<span class="article-link__summary">' + escapeHTML(article.summary) + '</span>' : ''}
+        ${renderCapsules(article)}
         <time class="article-link__date">${formatDate(article.date)}</time>
       </a>`;
+  }
+
+  /* ---- Capsules (subcategory tags) ---- */
+  function renderCapsules(article) {
+    var subs = getSubcategories(article);
+    if (subs.length === 0) return '';
+    return '<div class="card__capsules">'
+      + subs.map(function (s) {
+          return '<span class="card__capsule" data-subcat="' + escapeHTML(s) + '" data-cat="' + escapeHTML(article.category) + '">' + escapeHTML(s) + '</span>';
+        }).join('')
+      + '</div>';
   }
 
   /* ---- Helpers ---- */
@@ -425,6 +447,15 @@
       if (card) {
         e.preventDefault();
         renderCategory(currentCategory, '红人商家');
+      }
+      // Capsule click → navigate to subcategory
+      if (e.target.classList.contains('card__capsule')) {
+        e.preventDefault();
+        e.stopPropagation();
+        var subcat = e.target.dataset.subcat;
+        var cat = e.target.dataset.cat;
+        renderCategory(cat, subcat);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
 
