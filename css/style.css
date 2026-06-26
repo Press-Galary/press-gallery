@@ -345,7 +345,7 @@ h1, h2, h3 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-text);
-  padding-bottom: 0.5rem;
+  padding: 0 var(--spacing-md) 0.5rem;
   border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--spacing-sm);
   display: flex;
