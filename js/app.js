@@ -2,9 +2,9 @@
   const CATEGORIES = ['平台简介', '商家案例', '热点同款'];
 
   const CATEGORY_IMAGES = {
-    '平台简介': 'images/平台简介.png',
-    '商家案例': 'images/商家案例.png',
-    '热点同款': 'images/热点同款.jpeg'
+    '平台简介': 'images/平台简介.jpg',
+    '商家案例': 'images/商家案例.jpg',
+    '热点同款': 'images/热点同款.jpg'
   };
 
   let articles = [];
