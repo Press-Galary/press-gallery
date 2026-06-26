@@ -12,17 +12,6 @@
     "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-22-40-878Z-北京时装周.png"
   },
   {
-    "id": 9,
-    "title": "时尚芭莎：谁说艺术感的直播不带货？开间KEIGAN「超级时装发布」专场破其店播成交纪录",
-    "summary": "时尚芭莎：谁说艺术感的直播不带货？开间KEIGAN「超级时装发布」专场破其店播成交纪录",
-    "date": "2026-06-09",
-    "url": "http://fashion.bazaar.com.cn/2024/1213/345167.shtml",
-    "category": "平台简介",
-    "series": "开间KEIGAN",
-    "subcategory": "超级时装发布",
-    "subSubcategory": "四大家族"
-  },
-  {
     "id": 11,
     "title": "亿邦动力：不是带货，是带火！“顶奢国风”一夜卖800万，「超级时装发布」让“香云纱”火出圈",
     "summary": "亿邦动力：不是带货，是带火！“顶奢国风”一夜卖800万，「超级时装发布」让“香云纱”火出圈",
@@ -81,12 +70,13 @@
     "id": 16,
     "title": "鹭青一✖️周淼ZHOUMIAO",
     "summary": "",
-    "date": "2026-06-11",
-    "url": "http://fashion.bazaar.com.cn/2025/0422/347757.shtml",
+    "date": "2025-04-19",
+    "url": "https://www.pai.com.cn/p/01jsee746zm06r4c2ahdew5gc6",
     "category": "平台简介",
     "subcategory": "超级时装发布",
-    "subSubcategory": "时装周专场",
-    "originalTitle": "时尚芭莎：从“卖货”到“品牌叙事”的转变，「超级时装发布」让消费者更理解品牌理念"
+    "subSubcategory": "红人商升咖",
+    "originalTitle": "淘宝服饰电影级直播已成标配，鹭青一、周淼的这场大秀成为姐妹们的“电子榨菜”",
+    "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-47-50-696Z-image__8_.png"
   },
   {
     "id": 17,
@@ -906,5 +896,17 @@
     "series": "CHICJOC",
     "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-38-00-481Z-image__8_.png",
     "subcategory": "超级时装发布"
+  },
+  {
+    "id": 103,
+    "title": "开间KEIGAN",
+    "summary": "",
+    "date": "2024-12-11",
+    "url": "http://fashion.bazaar.com.cn/2024/1213/345167.shtml",
+    "category": "平台简介",
+    "image": "https://raw.githubusercontent.com/Press-Galary/press-gallery/main/images/2026-06-26T03-53-05-341Z-image__8_.png",
+    "subcategory": "超级时装发布",
+    "subSubcategory": "四大家族",
+    "originalTitle": "谁说艺术感的直播不带货？开间KEIGAN「超级时装发布」专场破其店播成交纪录"
   }
 ]
